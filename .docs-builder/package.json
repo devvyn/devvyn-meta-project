@@ -1,0 +1,20 @@
+{
+  "name": "devvyn-docs-builder",
+  "version": "1.0.0",
+  "description": "Convert markdown docs to rich HTML presentations",
+  "main": "convert.js",
+  "scripts": {
+    "convert": "node convert.js",
+    "watch": "node convert.js --watch",
+    "serve": "npx http-server ../docs-html -p 8080 -o"
+  },
+  "dependencies": {
+    "marked": "^9.1.2",
+    "fs-extra": "^11.1.1",
+    "chokidar": "^3.5.3",
+    "chalk": "^4.1.2"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

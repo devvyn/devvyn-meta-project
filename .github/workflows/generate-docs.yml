@@ -1,0 +1,164 @@
+name: 📚 Generate Rich Documentation
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - '**/*.md'
+      - '.docs-builder/**'
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - '**/*.md'
+      - '.docs-builder/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: '.docs-builder/package-lock.json'
+
+    - name: 📦 Install dependencies
+      run: |
+        cd .docs-builder
+        npm ci --only=production
+
+    - name: 🔧 Generate HTML documentation
+      run: |
+        cd .docs-builder
+        npm run convert
+
+    - name: 📊 Generate documentation report
+      run: |
+        cd .docs-builder
+        echo "## 📚 Documentation Generation Report" > ../docs-report.md
+        echo "**Generated:** $(date)" >> ../docs-report.md
+        echo "**Total HTML files:** $(find ../docs-html -name '*.html' | wc -l)" >> ../docs-report.md
+        echo "**Source MD files:** $(find .. -name '*.md' -not -path '../docs-html/*' -not -path '../node_modules/*' -not -path '../.git/*' | wc -l)" >> ../docs-report.md
+        echo "" >> ../docs-report.md
+        echo "### 📁 Generated Files:" >> ../docs-report.md
+        find ../docs-html -name '*.html' -exec basename {} \; | sort >> ../docs-report.md
+
+    - name: 🔍 Validate HTML output
+      run: |
+        # Check if key files were generated
+        if [ ! -f "docs-html/index.html" ]; then
+          echo "❌ Error: index.html not generated"
+          exit 1
+        fi
+
+        # Check if assets were copied
+        if [ ! -f "docs-html/assets/main.css" ]; then
+          echo "❌ Error: CSS assets not copied"
+          exit 1
+        fi
+
+        # Count generated files
+        HTML_COUNT=$(find docs-html -name '*.html' | wc -l)
+        MD_COUNT=$(find . -name '*.md' -not -path './docs-html/*' -not -path './node_modules/*' -not -path './.git/*' | wc -l)
+
+        echo "✅ Generated $HTML_COUNT HTML files from $MD_COUNT markdown files"
+
+        if [ $HTML_COUNT -eq 0 ]; then
+          echo "❌ Error: No HTML files generated"
+          exit 1
+        fi
+
+    - name: 📤 Upload documentation artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: generated-documentation
+        path: |
+          docs-html/
+          docs-report.md
+        retention-days: 90
+
+    - name: 📋 Setup GitHub Pages
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+      uses: actions/configure-pages@v4
+
+    - name: 🌐 Upload to GitHub Pages
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: docs-html/
+
+    - name: 🚀 Deploy to GitHub Pages
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+      id: deployment
+      uses: actions/deploy-pages@v4
+
+    - name: 💾 Commit generated files (optional)
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+
+        # Add generated files to git (optional - for backup)
+        git add docs-html/ docs-report.md || true
+
+        if git diff --staged --quiet; then
+          echo "📝 No changes to commit"
+        else
+          git commit -m "📚 Auto-generate documentation [skip ci]" || true
+          git push || true
+        fi
+
+    - name: 📝 Comment on PR (if applicable)
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+
+          try {
+            const report = fs.readFileSync('docs-report.md', 'utf8');
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 📚 Documentation Preview\n\n${report}\n\n🔗 **Preview:** Documentation has been generated and will be available once merged.`
+            });
+          } catch (error) {
+            console.log('Could not post comment:', error);
+          }
+
+    - name: ✅ Summary
+      run: |
+        echo "## 🎉 Documentation Generation Complete!" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📊 Statistics:" >> $GITHUB_STEP_SUMMARY
+        echo "- **HTML files generated:** $(find docs-html -name '*.html' | wc -l)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Source markdown files:** $(find . -name '*.md' -not -path './docs-html/*' -not -path './node_modules/*' -not -path './.git/*' | wc -l)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Build time:** $(date)" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+
+        if [ "${{ github.ref }}" == "refs/heads/main" ] || [ "${{ github.ref }}" == "refs/heads/master" ]; then
+          echo "### 🌐 Live Documentation:" >> $GITHUB_STEP_SUMMARY
+          echo "Your documentation is now live at: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "### 📦 Artifacts:" >> $GITHUB_STEP_SUMMARY
+          echo "Documentation artifacts have been uploaded and can be downloaded from the Actions tab." >> $GITHUB_STEP_SUMMARY
+        fi

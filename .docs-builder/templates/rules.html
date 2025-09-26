@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{TITLE}} | Rules & Standards</title>
+    <link rel="stylesheet" href="./assets/main.css">
+    <style>
+        /* Rules-specific enhancements */
+        .document.rules {
+            border-top: 5px solid var(--danger-color);
+        }
+
+        .rules-notice {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 20px 25px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .compliance-box {
+            background: #fff5f5;
+            border: 2px solid var(--danger-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+
+        .compliance-box h3 {
+            margin: 0 0 15px 0;
+            color: var(--danger-color);
+        }
+
+        .rule-item {
+            background: #f8f9fa;
+            border-left: 4px solid var(--danger-color);
+            margin: 20px 0;
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+            position: relative;
+        }
+
+        .rule-item::before {
+            content: "⚖️";
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            background: var(--danger-color);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .enforcement-level {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .enforcement-level.required {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .enforcement-level.recommended {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .enforcement-level.optional {
+            background: var(--text-secondary);
+            color: white;
+        }
+
+        .violation-examples {
+            background: #ffeaa7;
+            border-left: 4px solid var(--warning-color);
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .best-practices {
+            background: #d5f4e6;
+            border-left: 4px solid var(--success-color);
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .rules-checklist {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+
+        .rules-checklist h3 {
+            margin: 0 0 15px 0;
+            color: var(--text-primary);
+        }
+
+        .rules-checklist ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .rules-checklist li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f8f9fa;
+        }
+
+        .rules-checklist li:before {
+            content: "☐";
+            margin-right: 10px;
+            color: var(--text-secondary);
+        }
+
+        .enforcement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .enforcement-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .enforcement-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .enforcement-card.critical {
+            border-color: var(--danger-color);
+            background: #fff5f5;
+        }
+
+        .enforcement-card.important {
+            border-color: var(--warning-color);
+            background: #fffbf0;
+        }
+
+        .enforcement-card.standard {
+            border-color: var(--primary-color);
+            background: #f8fbff;
+        }
+    </style>
+</head>
+<body>
+    <div class="document rules">
+        <div class="header">
+            <h1>⚖️ {{TITLE}}</h1>
+            <div class="subtitle">Rules, Standards & Compliance Guidelines</div>
+            <div class="metadata">
+                <span>Last updated: {{LAST_MODIFIED}}</span> |
+                <span>Source: {{SOURCE_PATH}}</span>
+            </div>
+        </div>
+
+        <div class="rules-notice">
+            ⚖️ <strong>Compliance Required:</strong> These rules ensure quality, consistency, and team collaboration standards.
+        </div>
+
+        <div class="content">
+            {{CONTENT}}
+        </div>
+
+        <div class="compliance-box">
+            <h3>📋 Compliance Checklist</h3>
+            <p><strong>Before submitting work, ensure:</strong></p>
+            <ul>
+                <li>✅ All applicable rules have been followed</li>
+                <li>✅ Code/content has been reviewed by appropriate team members</li>
+                <li>✅ Documentation standards are met</li>
+                <li>✅ Quality gates have been passed</li>
+            </ul>
+        </div>
+
+        <div class="navigation">
+            <a href="./index.html">🏠 Documentation Home</a>
+            <a href="./coding-standards.html">💻 Coding Standards</a>
+            <a href="./project-management-framework-v2.html">📊 Project Framework</a>
+            <a href="../README.html">📋 Project README</a>
+        </div>
+    </div>
+
+    <script>
+        // Add rule enforcement level detection
+        document.querySelectorAll('h3, h4').forEach(heading => {
+            const text = heading.textContent.toLowerCase();
+            let level = '';
+
+            if (text.includes('required') || text.includes('must') || text.includes('critical')) {
+                level = 'required';
+            } else if (text.includes('recommended') || text.includes('should') || text.includes('important')) {
+                level = 'recommended';
+            } else if (text.includes('optional') || text.includes('may') || text.includes('suggested')) {
+                level = 'optional';
+            }
+
+            if (level) {
+                const badge = document.createElement('span');
+                badge.className = `enforcement-level ${level}`;
+                badge.textContent = level.toUpperCase();
+                heading.appendChild(badge);
+
+                // Style the containing section
+                const section = heading.parentElement;
+                if (section.tagName === 'DIV' || section.classList.contains('section')) {
+                    section.classList.add('rule-item');
+                }
+            }
+        });
+
+        // Add automatic table of contents for rules documents
+        const headings = document.querySelectorAll('h2, h3');
+        if (headings.length > 2) {
+            const toc = document.createElement('div');
+            toc.className = 'rules-checklist';
+            toc.innerHTML = '<h3>📑 Rules Index</h3>';
+
+            const list = document.createElement('ul');
+            headings.forEach(heading => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = `#${heading.id}`;
+                a.textContent = heading.textContent.replace(/REQUIRED|RECOMMENDED|OPTIONAL/g, '').trim();
+                a.style.cssText = `
+                    color: var(--danger-color);
+                    text-decoration: none;
+                    font-weight: 500;
+                `;
+                li.appendChild(a);
+                list.appendChild(li);
+            });
+
+            toc.appendChild(list);
+
+            const firstH2 = document.querySelector('h2');
+            if (firstH2) {
+                firstH2.parentNode.insertBefore(toc, firstH2);
+            }
+        }
+
+        // Add smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

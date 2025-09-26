@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{TITLE}} | Playbook</title>
+    <link rel="stylesheet" href="./assets/main.css">
+    <style>
+        /* Playbook-specific enhancements */
+        .document.playbook {
+            border-top: 5px solid var(--success-color);
+        }
+
+        .playbook-notice {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .quick-actions {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 15px;
+            z-index: 1000;
+            display: none;
+        }
+
+        .quick-actions.visible {
+            display: block;
+        }
+
+        .quick-actions h4 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .quick-actions a {
+            display: block;
+            padding: 5px 10px;
+            margin: 2px 0;
+            background: var(--success-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .print-hint {
+            margin-top: 20px;
+            padding: 10px;
+            background: #e8f5e8;
+            border-radius: 4px;
+            font-size: 14px;
+            text-align: center;
+            color: var(--success-color);
+        }
+
+        @media print {
+            .quick-actions { display: none; }
+            .document { break-inside: avoid; }
+        }
+
+        @media (max-width: 768px) {
+            .quick-actions { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="document playbook">
+        <div class="header">
+            <h1>🎯 {{TITLE}}</h1>
+            <div class="subtitle">Quick Reference Playbook</div>
+            <div class="metadata">
+                <span>Last updated: {{LAST_MODIFIED}}</span> |
+                <span>Source: {{SOURCE_PATH}}</span>
+            </div>
+        </div>
+
+        <div class="playbook-notice">
+            📋 This is a quick reference guide designed for daily use. Pin to your workspace or print for easy access.
+        </div>
+
+        <div class="content">
+            {{CONTENT}}
+        </div>
+
+        <div class="print-hint">
+            💡 <strong>Tip:</strong> This playbook is optimized for printing. Use Ctrl+P (Cmd+P) to create a physical reference card.
+        </div>
+
+        <div class="navigation">
+            <a href="./index.html">🏠 Documentation Home</a>
+            <a href="./human-agent-strategic-collaboration.html">📋 Strategic Framework</a>
+            <a href="./collaboration-rules.html">🤝 Collaboration Rules</a>
+            <a href="javascript:window.print()">🖨️ Print Playbook</a>
+        </div>
+    </div>
+
+    <div class="quick-actions" id="quickActions">
+        <h4>🚀 Quick Actions</h4>
+        <a href="#decision-trees">Decision Trees</a>
+        <a href="#red-flag-checklist">Red Flags</a>
+        <a href="#emergency-protocols">Emergency</a>
+        <a href="javascript:window.print()">Print</a>
+    </div>
+
+    <script>
+        // Show quick actions on desktop
+        function toggleQuickActions() {
+            const quickActions = document.getElementById('quickActions');
+            if (window.innerWidth > 768) {
+                quickActions.classList.add('visible');
+            } else {
+                quickActions.classList.remove('visible');
+            }
+        }
+
+        window.addEventListener('load', toggleQuickActions);
+        window.addEventListener('resize', toggleQuickActions);
+
+        // Add smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Highlight sections on scroll (for better navigation)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Could add active state highlighting here
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('h2, h3').forEach(heading => {
+            observer.observe(heading);
+        });
+    </script>
+</body>
+</html>

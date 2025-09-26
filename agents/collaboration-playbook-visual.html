@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human–Agent Collaboration Playbook</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.4;
+            margin: 0;
+            padding: 20px;
+            background: #f8f9fa;
+            color: #2c3e50;
+        }
+
+        .playbook {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 32px;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin: 0 0 8px 0;
+            color: #2c3e50;
+        }
+
+        .header .subtitle {
+            font-size: 16px;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+
+        .core-lens {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .section-title .emoji {
+            margin-right: 10px;
+            font-size: 24px;
+        }
+
+        .decision-tree {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .decision-tree h4 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+
+        .action-list {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .action-list li {
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .safe-cuts {
+            background: #d5f4e6;
+            border-left: 4px solid #27ae60;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .unsafe-cuts {
+            background: #ffeaa7;
+            border-left: 4px solid #e74c3c;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .red-flags {
+            background: #fff5f5;
+            border: 2px solid #e74c3c;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .red-flags ul {
+            margin: 10px 0 0 0;
+            padding-left: 20px;
+        }
+
+        .red-flags li {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .emergency-protocols {
+            background: #fff3cd;
+            border: 2px solid #f39c12;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .emergency-protocols ol {
+            margin: 10px 0 0 0;
+            padding-left: 20px;
+        }
+
+        .emergency-protocols li {
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .competitive-edge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .competitive-edge h3 {
+            margin: 0 0 15px 0;
+            font-size: 18px;
+        }
+
+        .edge-points {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+        }
+
+        .edge-point {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .bottom-message {
+            font-style: italic;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        .links {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+            text-align: center;
+        }
+
+        .links a {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 8px 15px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .links a:hover {
+            background: #2980b9;
+        }
+
+        @media print {
+            body { background: white; }
+            .playbook { box-shadow: none; }
+        }
+
+        @media (max-width: 600px) {
+            .playbook { padding: 20px; }
+            .edge-points { flex-direction: column; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="playbook">
+        <div class="header">
+            <h1>Human–Agent Collaboration Playbook</h1>
+            <div class="subtitle">Quick Reference for Mid-Sprint Decisions</div>
+        </div>
+
+        <div class="core-lens">
+            🎯 <strong>AI outputs are proposals, not facts.</strong><br>
+            Our edge is not speed of generation but discernment, trust, and user experience.
+        </div>
+
+        <div class="section">
+            <h3 class="section-title">
+                <span class="emoji">🔄</span>
+                Decision Trees
+            </h3>
+
+            <div class="decision-tree">
+                <h4>If AI generates code…</h4>
+                <p><strong>Human must:</strong></p>
+                <ul class="action-list">
+                    <li>✅ Verify critical paths have tests (≥70% coverage of business-critical flows)</li>
+                    <li>✅ Check UX alignment (does it make sense in the user journey?)</li>
+                    <li>✅ Confirm maintainability (naming, docs, version control)</li>
+                </ul>
+            </div>
+
+            <div class="decision-tree">
+                <h4>If AI generates content/design…</h4>
+                <p><strong>Human must:</strong></p>
+                <ul class="action-list">
+                    <li>✅ Check clarity against target user profile</li>
+                    <li>✅ Add provenance note (e.g., "This draft was AI-assisted, reviewed by [name]")</li>
+                    <li>✅ Ensure alignment with tone, accessibility, and brand guidelines</li>
+                </ul>
+            </div>
+
+            <div class="decision-tree">
+                <h4>If deadline pressure threatens review…</h4>
+                <div class="safe-cuts">
+                    <strong>🟢 Safe corner cuts:</strong>
+                    <ul>
+                        <li>Reduce test breadth (cover only critical paths)</li>
+                        <li>Delay polish (styling, refactors)</li>
+                    </ul>
+                </div>
+                <div class="unsafe-cuts">
+                    <strong>🔴 Unsafe cuts:</strong>
+                    <ul>
+                        <li>Skipping review of logic or UX impact</li>
+                        <li>Removing disclosure or provenance</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3 class="section-title">
+                <span class="emoji">🚨</span>
+                Red Flag Checklist
+            </h3>
+            <div class="red-flags">
+                <p><strong>You may be drifting if:</strong></p>
+                <ul>
+                    <li>📈 Bugs or UX complaints rise faster than features ship</li>
+                    <li>❓ No one can explain why a piece of code/content was accepted</li>
+                    <li>📝 Documentation lags more than one sprint behind releases</li>
+                    <li>🤔 Users or stakeholders express mistrust ("Did AI do this, or a human?")</li>
+                    <li>📊 Team velocity looks high but actual adoption stalls</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3 class="section-title">
+                <span class="emoji">🆘</span>
+                Emergency Protocols
+            </h3>
+            <div class="emergency-protocols">
+                <p><strong>When principles conflict under pressure:</strong></p>
+                <ol>
+                    <li><strong>User safety > speed</strong> → Never cut corners that put users at risk</li>
+                    <li><strong>Trust > novelty</strong> → If transparency slows us down, we slow down. Reputation loss costs more than missed deadlines</li>
+                    <li><strong>Sustainability > spectacle</strong> → A smaller release that endures beats a bigger one that crumbles</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="competitive-edge">
+            <h3>💪 Competitive Edge Reminder</h3>
+            <div class="edge-points">
+                <div class="edge-point">Resilience beats speed</div>
+                <div class="edge-point">Trust compounds</div>
+                <div class="edge-point">Experience is sticky</div>
+            </div>
+            <div class="bottom-message">
+                This playbook is our operating advantage. In a saturated market, anyone can ship. Few can ship things worth keeping.
+            </div>
+        </div>
+
+        <div class="links">
+            <a href="./human-agent-strategic-collaboration.md">📋 Full Strategic Framework</a>
+            <a href="./collaboration-rules.md">🤝 Collaboration Rules</a>
+            <a href="./ai-collaboration-framework.md">🔧 AI Framework</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -58,7 +58,7 @@ get_next_queue_number() {
         last_num=${last_num:-0}
     fi
 
-    printf "%03d" $((last_num + 1))
+    printf "%03d" $((10#$last_num + 1))
 }
 
 create_message() {
@@ -124,7 +124,7 @@ EOF
 
     # Update stats atomically
     local temp_stats=$(mktemp)
-    jq ".messages_sent += 1 | .last_queue_number = $queue_number | .last_message_id = \"$message_id\"" "$stats_file" > "$temp_stats"
+    jq ".messages_sent += 1 | .last_queue_number = $((10#$queue_number)) | .last_message_id = \"$message_id\"" "$stats_file" > "$temp_stats"
     mv "$temp_stats" "$stats_file"
 
     echo "✅ Message created: $final_file"

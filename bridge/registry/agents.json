@@ -47,8 +47,8 @@
       ],
       "inbox_path": "bridge/inbox/code/",
       "outbox_path": "bridge/outbox/code/",
-      "last_seen": "2025-09-27T17:43:20-06:00",
-      "session_id": "test-session-1"
+      "last_seen": "2025-09-27T18:58:34-06:00",
+      "session_id": "code-devvynmurphy-1759021114"
     },
     "gpt": {
       "agent_type": "gpt_integration",
@@ -116,6 +116,29 @@
       "outbox_path": "bridge/outbox/human/",
       "last_seen": "2025-09-27T17:30:00Z",
       "session_id": null
+    },
+    "bspec": {
+      "agent_type": "bspec_pipeline",
+      "namespace": "bspec-",
+      "status": "active",
+      "capabilities": [
+        "specification_driven_development",
+        "pipeline_orchestration",
+        "constitutional_validation",
+        "workflow_automation",
+        "stage_management",
+        "authority_enforcement"
+      ],
+      "authority_domains": [
+        "specification",
+        "implementation",
+        "validation",
+        "coordination"
+      ],
+      "inbox_path": "bridge/inbox/bspec/",
+      "outbox_path": "bridge/outbox/bspec/",
+      "last_seen": "2025-09-27T18:50:43-06:00",
+      "session_id": "bspec-devvynmurphy-1759020643"
     }
   },
   "coordination_protocols": {

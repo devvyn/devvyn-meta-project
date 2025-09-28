@@ -136,3 +136,64 @@ docs-html/
 .env.production
 secrets/
 private/
+
+# Idea Evolution System - Frequently Updated Ephemera
+# (Structural files are tracked, but dynamic content is ignored)
+
+# Bridge queue and processing (ephemeral messages)
+bridge/queue/pending/*.md
+bridge/queue/processing/*.md
+bridge/archive/processed-*.md
+bridge/registry/sessions/*.json
+
+# Sync preparation packages (generated automatically)
+sync-prep/pending/*/
+sync-prep/archive/*/
+
+# Active experiments in kitchen (tracked until promoted)
+kitchen/active-experiments/*/results/
+kitchen/active-experiments/*/logs/
+kitchen/active-experiments/*/temp/
+
+# Research branch temporary files
+research/branches/*/experiments/temp/
+research/branches/*/experiments/logs/
+research/branches/*/results/temp/
+
+# Knowledge graph analytics (regenerated)
+knowledge/analytics/
+knowledge/temp/
+knowledge/cache/
+
+# Services temporary data
+services/temp/
+services/logs/
+services/cache/
+
+# Generated reports and temporary analysis
+*.analysis.json
+*.metrics.json
+*-temp-*
+*-cache-*
+
+# Auto-generated sync materials
+*-sync-package-*
+decision-matrix-*.json
+executive-summary-*.md
+
+# Temporary experimental files
+incubator/temp/
+kitchen/temp/
+garden/temp/
+
+# Bridge statistics (regenerated)
+bridge/stats/
+bridge/metrics/
+
+# Lock files for atomic operations
+*.lock
+*.processing
+
+# Temporary demonstration files
+demonstrations/temp/
+demos/temp/

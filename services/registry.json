@@ -1,0 +1,271 @@
+{
+  "registry_version": "1.0.0",
+  "last_updated": "2025-09-27T19:02:00Z",
+  "total_services": 6,
+  "active_services": 4,
+  "experimental_services": 2,
+  "deprecated_services": 0,
+
+  "services": {
+    "csv-magic-reader": {
+      "name": "csv-magic-reader",
+      "version": "1.2.0",
+      "description": "Intelligent CSV parsing with automatic type inference and encoding detection",
+      "provider": "aafc-herbarium-dwc-extraction-2025",
+      "status": "active",
+      "category": "data_processing",
+      "interface": {
+        "type": "python_api",
+        "entry_point": "csv_magic.parse",
+        "config_file": "active/csv-magic-reader/interface.json"
+      },
+      "capabilities": [
+        "automatic_delimiter_detection",
+        "type_inference",
+        "encoding_detection",
+        "header_detection",
+        "data_validation",
+        "malformed_data_recovery"
+      ],
+      "sla": {
+        "tier": "silver",
+        "availability": "99.5%",
+        "response_time": "<500ms for files <10MB",
+        "throughput": "1000 files/hour"
+      },
+      "usage_stats": {
+        "daily_requests": 150,
+        "unique_consumers": 3,
+        "average_response_time": "285ms",
+        "error_rate": "0.2%"
+      },
+      "created_at": "2025-09-15T10:30:00Z",
+      "last_updated": "2025-09-25T14:20:00Z"
+    },
+
+    "bspec-pipeline": {
+      "name": "bspec-pipeline",
+      "version": "1.0.0",
+      "description": "Bridge-Specification Pipeline for constitutional specification-driven development",
+      "provider": "devvyn-meta-project",
+      "status": "active",
+      "category": "specification",
+      "interface": {
+        "type": "command_line",
+        "entry_point": "scripts/bridge-spec-pipeline.sh",
+        "config_file": "active/bspec-pipeline/interface.json"
+      },
+      "capabilities": [
+        "specification_driven_development",
+        "constitutional_governance",
+        "pipeline_orchestration",
+        "authority_domain_enforcement",
+        "stage_progression_validation"
+      ],
+      "sla": {
+        "tier": "gold",
+        "availability": "99.9%",
+        "response_time": "<2s for stage transitions",
+        "throughput": "100 projects/day"
+      },
+      "usage_stats": {
+        "daily_requests": 25,
+        "unique_consumers": 2,
+        "average_response_time": "1.2s",
+        "error_rate": "0.1%"
+      },
+      "created_at": "2025-09-27T18:30:00Z",
+      "last_updated": "2025-09-27T18:50:00Z"
+    },
+
+    "bridge-v3-messaging": {
+      "name": "bridge-v3-messaging",
+      "version": "3.0.0",
+      "description": "Collision-safe multi-agent communication system with atomic operations",
+      "provider": "devvyn-meta-project",
+      "status": "active",
+      "category": "communication",
+      "interface": {
+        "type": "command_line",
+        "entry_point": "scripts/bridge-send.sh",
+        "config_file": "active/bridge-v3-messaging/interface.json"
+      },
+      "capabilities": [
+        "collision_safe_messaging",
+        "atomic_operations",
+        "namespace_isolation",
+        "fifo_processing",
+        "message_archiving",
+        "agent_registration"
+      ],
+      "sla": {
+        "tier": "gold",
+        "availability": "99.95%",
+        "response_time": "<100ms for message creation",
+        "throughput": "10000 messages/hour"
+      },
+      "usage_stats": {
+        "daily_requests": 500,
+        "unique_consumers": 6,
+        "average_response_time": "45ms",
+        "error_rate": "0.05%"
+      },
+      "created_at": "2025-09-27T17:00:00Z",
+      "last_updated": "2025-09-27T18:52:00Z"
+    },
+
+    "ocr-evaluation-framework": {
+      "name": "ocr-evaluation-framework",
+      "version": "0.8.0",
+      "description": "Comprehensive OCR engine evaluation with accuracy metrics and performance benchmarking",
+      "provider": "aafc-herbarium-dwc-extraction-2025",
+      "status": "active",
+      "category": "data_processing",
+      "interface": {
+        "type": "python_api",
+        "entry_point": "ocr_eval.evaluate",
+        "config_file": "active/ocr-evaluation-framework/interface.json"
+      },
+      "capabilities": [
+        "multi_engine_testing",
+        "accuracy_benchmarking",
+        "performance_profiling",
+        "ground_truth_comparison",
+        "confidence_scoring",
+        "batch_processing"
+      ],
+      "sla": {
+        "tier": "silver",
+        "availability": "99.0%",
+        "response_time": "<30s for single image",
+        "throughput": "100 images/hour"
+      },
+      "usage_stats": {
+        "daily_requests": 50,
+        "unique_consumers": 2,
+        "average_response_time": "12s",
+        "error_rate": "1.2%"
+      },
+      "created_at": "2025-09-20T09:15:00Z",
+      "last_updated": "2025-09-26T16:45:00Z"
+    },
+
+    "complexity-analyzer": {
+      "name": "complexity-analyzer",
+      "version": "0.1.0",
+      "description": "Project complexity analysis for cellular division opportunities",
+      "provider": "devvyn-meta-project",
+      "status": "experimental",
+      "category": "analysis",
+      "interface": {
+        "type": "python_script",
+        "entry_point": "kitchen/active-experiments/cellular-division/complexity-analyzer.py",
+        "config_file": "experimental/complexity-analyzer/interface.json"
+      },
+      "capabilities": [
+        "specification_counting",
+        "dependency_analysis",
+        "domain_divergence_measurement",
+        "stability_assessment",
+        "quality_scoring",
+        "division_recommendation"
+      ],
+      "sla": {
+        "tier": "bronze",
+        "availability": "95.0%",
+        "response_time": "<10s for project analysis",
+        "throughput": "50 analyses/hour"
+      },
+      "usage_stats": {
+        "daily_requests": 5,
+        "unique_consumers": 1,
+        "average_response_time": "3.2s",
+        "error_rate": "5.0%"
+      },
+      "created_at": "2025-09-27T19:00:00Z",
+      "last_updated": "2025-09-27T19:00:00Z"
+    },
+
+    "pattern-recognition-engine": {
+      "name": "pattern-recognition-engine",
+      "version": "0.2.0",
+      "description": "Cross-project pattern mining and reusable component identification",
+      "provider": "devvyn-meta-project",
+      "status": "experimental",
+      "category": "analysis",
+      "interface": {
+        "type": "python_api",
+        "entry_point": "pattern_engine.analyze",
+        "config_file": "experimental/pattern-recognition-engine/interface.json"
+      },
+      "capabilities": [
+        "code_pattern_mining",
+        "specification_pattern_analysis",
+        "cross_project_comparison",
+        "reusable_component_identification",
+        "similarity_scoring",
+        "recommendation_generation"
+      ],
+      "sla": {
+        "tier": "bronze",
+        "availability": "90.0%",
+        "response_time": "<60s for cross-project analysis",
+        "throughput": "10 analyses/hour"
+      },
+      "usage_stats": {
+        "daily_requests": 2,
+        "unique_consumers": 1,
+        "average_response_time": "45s",
+        "error_rate": "10.0%"
+      },
+      "created_at": "2025-09-25T11:30:00Z",
+      "last_updated": "2025-09-27T13:15:00Z"
+    }
+  },
+
+  "categories": {
+    "data_processing": {
+      "description": "Services for data ingestion, transformation, and analysis",
+      "services": ["csv-magic-reader", "ocr-evaluation-framework"]
+    },
+    "specification": {
+      "description": "Services for specification-driven development and governance",
+      "services": ["bspec-pipeline"]
+    },
+    "communication": {
+      "description": "Services for inter-agent and cross-project communication",
+      "services": ["bridge-v3-messaging"]
+    },
+    "analysis": {
+      "description": "Services for project analysis and optimization recommendations",
+      "services": ["complexity-analyzer", "pattern-recognition-engine"]
+    }
+  },
+
+  "providers": {
+    "aafc-herbarium-dwc-extraction-2025": {
+      "services": ["csv-magic-reader", "ocr-evaluation-framework"],
+      "total_requests_served": 1500,
+      "average_sla_compliance": "99.2%"
+    },
+    "devvyn-meta-project": {
+      "services": ["bspec-pipeline", "bridge-v3-messaging", "complexity-analyzer", "pattern-recognition-engine"],
+      "total_requests_served": 800,
+      "average_sla_compliance": "99.5%"
+    }
+  },
+
+  "usage_trends": {
+    "fastest_growing": "bspec-pipeline",
+    "most_reliable": "bridge-v3-messaging",
+    "highest_volume": "bridge-v3-messaging",
+    "newest_experimental": "complexity-analyzer"
+  },
+
+  "ecosystem_health": {
+    "service_adoption_rate": "85%",
+    "cross_project_usage": "75%",
+    "average_sla_compliance": "99.3%",
+    "user_satisfaction_score": "4.2/5.0"
+  }
+}

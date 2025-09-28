@@ -1,6 +1,6 @@
-# AI Collaboration Meeting Framework
+# Multi-Agent Collaboration Framework v2.1
 
-## Claude Chat + Claude Code as Professional Meetings
+## Human + Claude Chat + Claude Code as Professional Collaboration
 
 ### Meeting Categories
 
@@ -38,13 +38,22 @@
 
 ### Inter-Agent Knowledge Transfer
 
-#### INTER_AGENT_MEMO Pattern
+#### Bridge Communication System v1.0
+
+- **Purpose**: Event-driven messaging between Claude Chat and Claude Code agents
+- **Location**: `bridge/` directory with inbox/outbox structure
+- **Message Format**: Priority-based with context, content, and expected action
+- **Context Preservation**: `bridge/context/` for decisions, patterns, and state tracking
+- **Benefits**: Eliminates polling overhead, provides clear priorities, maintains audit trail
+
+#### INTER_AGENT_MEMO Pattern (Legacy)
 
 - **Purpose**: Pass institutional knowledge and proven patterns between agent sessions
 - **Format**: `PROJECT_ROOT/INTER_AGENT_MEMO.md`
 - **Content**: Historical patterns, implementation priorities, future agent guidance
 - **Example**: aafc-herbarium project's gist pattern extraction and application roadmap
 - **Update Cycle**: When significant patterns or learnings emerge that future agents should know
+- **Migration**: Bridge system provides structured alternative for most use cases
 
 #### Standard Inter-Agent Memo Structure
 
@@ -73,6 +82,14 @@
 ```
 
 ### Session Handoff Protocol
+
+#### Bridge Communication (Recommended)
+
+**Chat → Code**: Write priority message to `bridge/inbox/code/`
+**Code → Chat**: Write response/summary to `bridge/outbox/chat/`
+**Context**: Automatically preserved in `bridge/context/` files
+
+#### Legacy Handoff Protocol
 
 #### End of Claude Chat Session
 
@@ -129,5 +146,6 @@
 
 ---
 
-**Integration**: Extends existing collaboration-rules.md with AI-specific protocols
-**Status**: Active implementation phase
+**Integration**: Extends existing collaboration-rules.md with multi-agent collaboration protocols
+**Bridge System**: See `bridge/README.md` for detailed usage instructions
+**Status**: Active implementation phase with Bridge v1.0 operational

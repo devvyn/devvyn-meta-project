@@ -1,0 +1,128 @@
+{
+  "registry_version": "3.0",
+  "last_updated": "2025-09-27T17:30:00Z",
+  "active_agents": {
+    "chat": {
+      "agent_type": "claude_chat",
+      "namespace": "chat-",
+      "status": "active",
+      "capabilities": [
+        "strategic_planning",
+        "framework_evolution",
+        "priority_setting",
+        "stakeholder_coordination",
+        "portfolio_management",
+        "cross_project_analysis"
+      ],
+      "authority_domains": [
+        "strategic_planning",
+        "framework_evolution",
+        "priority_setting",
+        "stakeholder_coordination"
+      ],
+      "inbox_path": "bridge/inbox/chat/",
+      "outbox_path": "bridge/outbox/chat/",
+      "last_seen": "2025-09-27T17:30:00Z",
+      "session_id": null
+    },
+    "code": {
+      "agent_type": "claude_code",
+      "namespace": "code-",
+      "status": "active",
+      "capabilities": [
+        "technical_implementation",
+        "code_optimization",
+        "pattern_recognition",
+        "system_architecture",
+        "testing_and_validation",
+        "tool_execution",
+        "file_operations",
+        "formal_verification"
+      ],
+      "authority_domains": [
+        "technical_implementation",
+        "code_optimization",
+        "pattern_recognition",
+        "system_architecture"
+      ],
+      "inbox_path": "bridge/inbox/code/",
+      "outbox_path": "bridge/outbox/code/",
+      "last_seen": "2025-09-27T17:43:20-06:00",
+      "session_id": "test-session-1"
+    },
+    "gpt": {
+      "agent_type": "gpt_integration",
+      "namespace": "gpt-",
+      "status": "active",
+      "capabilities": [
+        "content_generation",
+        "natural_language_processing",
+        "text_transformation",
+        "creative_writing",
+        "documentation_creation",
+        "summarization"
+      ],
+      "authority_domains": [
+        "content_generation",
+        "natural_language_processing",
+        "creative_problem_solving"
+      ],
+      "inbox_path": "bridge/inbox/gpt/",
+      "outbox_path": "bridge/outbox/gpt/",
+      "last_seen": "2025-09-27T17:15:00Z",
+      "session_id": null
+    },
+    "codex": {
+      "agent_type": "codex_integration",
+      "namespace": "codex-",
+      "status": "active",
+      "capabilities": [
+        "code_generation",
+        "algorithm_implementation",
+        "code_review",
+        "optimization",
+        "refactoring",
+        "technical_problem_solving"
+      ],
+      "authority_domains": [
+        "code_generation",
+        "algorithm_implementation",
+        "technical_problem_solving"
+      ],
+      "inbox_path": "bridge/inbox/codex/",
+      "outbox_path": "bridge/outbox/codex/",
+      "last_seen": "2025-09-27T17:15:00Z",
+      "session_id": null
+    },
+    "human": {
+      "agent_type": "human_operator",
+      "namespace": "human-",
+      "status": "active",
+      "capabilities": [
+        "domain_expertise",
+        "quality_standards",
+        "business_requirements",
+        "final_approval",
+        "stakeholder_communication",
+        "strategic_oversight"
+      ],
+      "authority_domains": [
+        "domain_expertise",
+        "quality_standards",
+        "business_requirements",
+        "final_approval"
+      ],
+      "inbox_path": "bridge/inbox/human/",
+      "outbox_path": "bridge/outbox/human/",
+      "last_seen": "2025-09-27T17:30:00Z",
+      "session_id": null
+    }
+  },
+  "coordination_protocols": {
+    "message_id_format": "[timestamp]-[sender]-[uuid]",
+    "namespace_format": "[agent]-[timestamp]-[uuid].md",
+    "queue_processing": "fifo",
+    "atomic_operations": true,
+    "collision_prevention": "namespace_isolation"
+  }
+}

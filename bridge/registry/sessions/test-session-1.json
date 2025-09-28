@@ -1,0 +1,12 @@
+{
+  "session_id": "test-session-1",
+  "agent": "code",
+  "registered": "2025-09-27T17:43:20-06:00",
+  "last_activity": "2025-09-27T17:43:20-06:00",
+  "status": "active",
+  "messages_sent": 0,
+  "messages_received": 0,
+  "pid": 16312,
+  "user": "devvynmurphy",
+  "host": "Devvyns-MacBook-Air.local"
+}

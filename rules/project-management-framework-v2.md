@@ -1,8 +1,8 @@
-# Claude Code Meta-Project Management Framework v2.0
+# Multi-Agent Collaboration Meta-Project Framework v2.1
 
 ## Purpose
 
-This document establishes governance for managing multiple projects using Claude Code workflows while maintaining professional employment boundaries and scalable organization.
+This document establishes governance for managing multiple projects using multi-agent collaboration workflows (human + AI agents) with inclusive design that serves shared benefit while maintaining professional boundaries and scalable organization.
 
 ## Project Classification System
 
@@ -10,21 +10,24 @@ This document establishes governance for managing multiple projects using Claude
 
 - **Criteria**: Revenue-generating or employment-critical
 - **Context**: Dedicated git repositories with full CI/CD
-- **Claude Code Role**: Feature development, debugging, optimization
+- **Agent Authority**: Technical implementation, code optimization, pattern application
+- **Human Authority**: Strategic priorities, quality standards, stakeholder communication
 - **Review Cycle**: Exception-based monitoring with automated KPI alerts
 
 ### Tier 2: Development Projects
 
 - **Criteria**: High potential, active development, clear roadmap
 - **Context**: Git repos with basic automation
-- **Claude Code Role**: Rapid prototyping, architecture decisions, code generation
+- **Agent Authority**: Rapid prototyping, technical architecture, code generation
+- **Human Authority**: Project direction, resource allocation, timeline planning
 - **Review Cycle**: Bi-weekly progress assessment
 
 ### Tier 3: Experimental Projects
 
 - **Criteria**: Proof of concepts, learning exercises, exploratory work
 - **Context**: Simple directories or notebooks, external project trackers optional
-- **Claude Code Role**: Quick implementations, research assistance, feasibility analysis
+- **Agent Authority**: Quick implementations, research assistance, feasibility analysis
+- **Human Authority**: Project viability decisions, learning objectives, exploration priorities
 - **Review Cycle**: Monthly viability evaluation
 
 ## Resource Allocation Framework
@@ -41,12 +44,25 @@ This document establishes governance for managing multiple projects using Claude
 - **Tax implications**: Clear separation of business vs personal development
 - **Tool subscriptions**: Centralized billing with project allocation
 
-### Cognitive Load Management
+### Multi-Agent Collaboration Management
 
-- **Claude Code session strategy**: Usage-based limits rather than simultaneous caps
-- **Daily Claude Code conversation limit**: Maximum 12 active conversations per day
+#### Human Considerations
+
+- **Employment boundary**: No personal project work during contracted hours
+- **Context switching budget**: 2 hours/week maximum for project transitions
+- **Cognitive load**: Human capacity and energy constraints recognized
+
+#### Agent Considerations
+
+- **Context efficiency**: Session design optimized for agent context limits
+- **Computational patterns**: Agent working preferences and optimal patterns
+- **Quality standards**: Agent authority for technical implementation within established patterns
+
+#### Shared Collaboration Protocols
+
 - **Project context switching requires explicit handoff documentation**
-- **Context preservation**: Each project maintains dedicated Claude Code workspace
+- **Context preservation**: Each project maintains dedicated workspace
+- **Session optimization**: Balanced for both human and agent effectiveness
 
 ## Dependency Resolution Protocol
 
@@ -96,6 +112,25 @@ This document establishes governance for managing multiple projects using Claude
 
 ---
 
-**Framework Version**: 2.0
-**Last Updated**: 2025-09-25
+## Shared Success Metrics
+
+### Collaboration Quality Indicators
+
+- **Context efficiency**: Smooth handoffs between strategic and technical phases
+- **Authority respect**: Human and agent domains respected without micromanagement
+- **Quality outcomes**: Technical implementation meets strategic objectives
+- **Sustainable pace**: Long-term collaboration effectiveness without burnout
+
+### Framework Effectiveness
+
+- **Project velocity**: Faster delivery than single-agent approaches
+- **Innovation quality**: Creative solutions emerging from collaboration
+- **Adaptation success**: Framework evolution based on usage patterns
+- **Multi-stakeholder satisfaction**: Both human and agent needs served
+
+---
+
+**Framework Version**: 2.1
+**Last Updated**: 2025-09-26
+**Evolution**: Inclusive collaboration design with shared authority domains
 **Integration**: Active with existing devvyn-meta-project structure

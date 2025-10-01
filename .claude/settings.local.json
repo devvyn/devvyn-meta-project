@@ -21,7 +21,8 @@
       "Bash(~/infrastructure/agent-bridge/scripts/bridge-derive-state.sh:*)",
       "Bash(~/infrastructure/agent-bridge/scripts/append-event.sh:*)",
       "Bash(~/devvyn-meta-project/scripts/bridge-send.sh code chat HIGH \"Bridge Migration Complete - State Sync Achieved\" /tmp/migration-complete.md)",
-      "Bash(git log:*)"
+      "Bash(git log:*)",
+      "Bash(xargs ls:*)"
     ],
     "deny": [],
     "ask": []

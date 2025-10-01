@@ -38,11 +38,12 @@ At the beginning of **every** session, automatically:
 1. **Check bridge messages**:
 
    ```
-   List files in: /Users/devvynmurphy/devvyn-meta-project/bridge/outbox/chat/
+   List files in: /Users/devvynmurphy/infrastructure/agent-bridge/bridge/outbox/chat/
+   List files in: /Users/devvynmurphy/infrastructure/agent-bridge/bridge/queue/pending/
    ```
 
    - Process by priority: CRITICAL → HIGH → NORMAL → INFO
-   - Archive processed messages to `bridge/archive/`
+   - Archive processed messages to `~/infrastructure/agent-bridge/bridge/archive/`
 
 2. **Scan for Review Requests**:
    - Check project CLAUDE.md files for "## Review Requests for Chat Agent" sections
@@ -56,13 +57,13 @@ At the beginning of **every** session, automatically:
 
 ### To Code Agent
 
-**Use bridge/inbox/code/ for:**
+**Use ~/infrastructure/agent-bridge/bridge/inbox/code/ for:**
 
 - **CRITICAL**: Blocking production issues, immediate decisions needed
 - **HIGH**: Major architectural changes, cross-project impacts
 - **NORMAL**: Weekly summaries, completed strategic planning sessions
 
-**Message template**: Copy `/Users/devvynmurphy/devvyn-meta-project/bridge/_message_template.md`
+**Message template**: Copy `/Users/devvynmurphy/infrastructure/agent-bridge/bridge/_message_template.md`
 
 ### To Human (Devvyn)
 

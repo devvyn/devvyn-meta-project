@@ -68,6 +68,38 @@
 
 ---
 
+## Slash Command Development Patterns
+
+### Advanced Orchestration Commands Pattern
+
+**Context**: Complex projects benefit from sophisticated slash command systems for multi-agent coordination
+**Implementation**:
+
+- **Deployment Registry**: `/deploy list` showing organized component categories (infrastructure, agents, specifications, research, development)
+- **Agent Creation**: `/bridge-agent-create [type] [name]` with specialized types (darwin-core, ocr-benchmark, pattern-analysis, scientific-review)
+- **Session Coordination**: `/session-handoff [target] [priority] [title]` for cross-session workflows
+- **Infrastructure Management**: `/bridge-extraction-prep`, `/sync-with-native` for system evolution
+
+**Success Indicators**: Seamless multi-agent workflows, reduced coordination overhead, scalable command discovery
+**Example**: AAFC Herbarium project - 14 commands enabling hybrid orchestration with proven production use
+**Status**: Ready for framework propagation - HIGH priority bridge message sent for strategic review
+
+### Command Propagation Pattern
+
+**Context**: Valuable slash commands developed in specialized projects should benefit the broader framework
+**Implementation**:
+
+1. **Document Discovery**: Bridge context update with command inventory and value assessment
+2. **Strategic Review**: HIGH priority bridge message to meta-project for evaluation
+3. **Framework Integration**: Commands become standardized patterns for cross-project use
+4. **Community Scaling**: Template creation for other projects to develop domain-specific commands
+
+**Success Indicators**: Cross-project command reuse, accelerated project development, standardized orchestration patterns
+**Example**: Current propagation of AAFC commands to meta-project framework
+**Status**: Phase 1 (Strategic Review) initiated via bridge messaging system
+
+---
+
 ## Pattern Template
 
 ```markdown

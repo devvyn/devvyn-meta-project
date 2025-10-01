@@ -1,7 +1,15 @@
 {
   "permissions": {
     "allow": [
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Read(//Users/devvynmurphy/**)",
+      "Bash(fd:*)",
+      "Bash(/dev/null --type d)",
+      "Bash(/dev/null --type d --hidden)",
+      "Bash(./scripts/bridge-register.sh register:*)",
+      "Bash(./scripts/bridge-receive.sh:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []

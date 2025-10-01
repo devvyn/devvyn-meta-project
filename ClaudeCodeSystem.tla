@@ -6,7 +6,7 @@ Replace(str, oldStr, newStr) == newStr  \* Simplified for model checking
 
 CONSTANTS
     Tools,           \* Set of available tools: {Read, Write, Edit, Bash, Task, Grep, Glob, WebFetch, TodoWrite, Bridge}
-    Agents,          \* Set of agents: {ClaudeCode, ClaudeChat, Human, GPT, Codex}
+    Agents,          \* Set of active agents: {ClaudeCode, ClaudeChat, Human}
     Files,           \* Set of file paths
     Priorities,      \* Set of message priorities: {CRITICAL, HIGH, NORMAL, INFO}
     Contents,        \* Set of possible file contents

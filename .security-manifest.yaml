@@ -1,0 +1,164 @@
+version: 1.0
+updated: 2025-09-30
+description: Multi-Agent Security Architecture - Three-Tier Classification System
+
+security_levels:
+  published:
+    description: "Public repositories, open source code, scientific data"
+    path_patterns:
+      - "~/Documents/GitHub/**"
+    excluded_patterns:
+      - "**/.env"
+      - "**/.env.*"
+      - "**/*secret*"
+      - "**/*credential*"
+      - "**/*.key"
+      - "**/*.pem"
+    agent_access: full
+    audit_level: minimal
+    notes: "GitHub public repositories - safe to share, no credentials"
+
+  private:
+    description: "Local development, research, strategy, meta-project coordination"
+    path_patterns:
+      - "~/devvyn-meta-project/**"
+      - "~/Documents/work-private/**"
+      - "~/infrastructure/**"
+      - "~/Desktop/**"  # Temporary workspace files
+      - "~/Downloads/**"  # Downloaded resources
+    agent_access: read_write_with_logging
+    audit_level: standard
+    notes: "Coordination files, strategy docs - access logged but allowed"
+
+  secret:
+    description: "Credentials, API keys, proprietary data, PII, encrypted volumes"
+    path_patterns:
+      - "~/Secrets/**"
+      - "**/.env"
+      - "**/.env.*"
+      - "**/*credentials*"
+      - "**/*credential*"
+      - "**/*secret*"
+      - "**/api-keys/**"
+      - "**/*.key"
+      - "**/*.pem"
+      - "~/.aws/credentials"
+      - "~/.ssh/**"
+    agent_access: no_access
+    audit_level: comprehensive
+    notes: "Requires explicit human sign-off via approval workflow"
+    exceptions:
+      - path: "~/Secrets/approved-for-agents/"
+        requires: explicit_human_sign_off
+        expires_after: session_end
+
+agent_policies:
+  chat:
+    default_access: [published, private]
+    requires_sign_off: [secret]
+    notes: "Strategic agent - full coordination access with logging"
+
+  code:
+    default_access: [published, private]
+    requires_sign_off: [secret]
+    notes: "Technical agent - implementation with audit trail"
+
+  future_agents:
+    default_access: [published]
+    requires_sign_off: [private, secret]
+    notes: "New agents start with minimal access, expand with validation"
+
+audit_configuration:
+  log_location: "~/infrastructure/security/audit.log"
+  log_format: "text"  # [timestamp] agent:name action:type path:file classification:level status:result
+  rotate_after: 30_days
+  archive_location: "~/infrastructure/security/audit-archive/"
+  alert_on:
+    - secret_access_blocked
+    - repeated_denial  # >3 blocks in 10 minutes
+    - classification_violation_attempt
+    - unclassified_path_access
+
+approval_workflows:
+  timeout_policy:
+    CRITICAL: 4_hours
+    HIGH: 24_hours
+    NORMAL: 7_days
+    INFO: 30_days
+
+  approval_location: "~/infrastructure/agent-bridge/bridge/approval-requests/"
+  archive_location: "~/infrastructure/agent-bridge/bridge/archive/"
+  template_location: "~/infrastructure/agent-bridge/bridge/approval-requests/_template-*.md"
+
+  required_for:
+    - secret_file_access
+    - public_repository_publish
+    - file_deletion_outside_project
+    - production_config_modification
+    - encrypted_volume_access
+
+knowledge_base:
+  location: "~/devvyn-meta-project/knowledge-base/"
+  structure:
+    decisions: "Strategic decisions log"
+    patterns: "Cross-project patterns"
+    security: "Security classification decisions"
+    search: "Search utilities (kb-search.sh)"
+  search_tool: "~/devvyn-meta-project/knowledge-base/search/kb-search.sh"
+  index_tool: "~/devvyn-meta-project/knowledge-base/search/kb-index.sh"
+
+review_cadence:
+  weekly:
+    - "Review audit log for violations or patterns"
+    - "Check pending approval requests (>24h)"
+    - "Track knowledge base search frequency"
+
+  monthly:
+    - "Validate security classifications"
+    - "Assess agent topology (new agents needed?)"
+    - "Review framework effectiveness"
+
+  quarterly:
+    - "Full system security assessment"
+    - "Framework version updates"
+    - "Major architectural decisions"
+
+success_metrics:
+  security:
+    - "Zero secret leaks in responses/artifacts"
+    - "100% SECRET access goes through approval"
+    - "Audit log captures all file operations"
+    - "<5 minutes average approval turnaround"
+
+  knowledge_base:
+    - "Track search frequency (>5/day → consider KB Agent)"
+    - "Search result relevance feedback"
+    - "Time saved vs manual search"
+
+  agent_efficiency:
+    - "Agent-to-agent coordination frequency"
+    - "Human approval request frequency"
+    - "Time saved by automation vs overhead"
+    - "Human cognitive load (subjective)"
+
+red_flags:
+  immediate_escalation:
+    - "Agents working around security (temp files to avoid detection)"
+    - "Approval requests piling up (>3 pending >24h)"
+    - "Security violations in audit logs"
+    - "Knowledge base searches >10/day (KB Agent needed sooner)"
+
+notes: |
+  This manifest defines security policy for the multi-agent collaboration system.
+
+  Philosophy: "Trust but verify" - agents have filesystem access but commit to
+  self-regulation via awareness protocols. Audit logging catches violations after
+  the fact rather than preventing access at OS level (which is impossible in
+  macOS user account architecture).
+
+  Implementation: See ~/devvyn-meta-project/CLAUDE.md Security Boundaries section
+  for agent-facing protocols and ~/infrastructure/security/check-access.sh for
+  pre-flight security checks.
+
+  Version History:
+  - 1.0 (2025-09-30): Initial implementation of three-tier security model

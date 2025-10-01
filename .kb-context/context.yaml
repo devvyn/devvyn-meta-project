@@ -1,0 +1,35 @@
+# Meta-Project KB Context
+# Personal coordination workspace
+
+workspace: "Meta-Project (Personal)"
+
+contexts:
+  - multi_agent_collaboration
+  - bridge_system_coordination
+  - security_architecture
+  - knowledge_base_infrastructure
+  - claude_code_hooks
+
+people:
+  - me: "Devvyn Murphy"
+  - household: "Spouse (upstairs housemate)"
+
+policies:
+  - "Personal sovereignty over projects"
+  - "Open source (MIT licensed) by default"
+  - "Security: 3-tier classification (SECRET/PRIVATE/PUBLISHED)"
+  - "Agent collaboration framework v2.1"
+
+clues:
+  - "bridge"
+  - "meta-project"
+  - "coordination"
+  - "security architecture"
+  - "hooks"
+  - "multi-agent"
+  - "framework"
+
+notes: |
+  This is the coordination layer for all sub-projects.
+  Focus: Infrastructure, patterns, cross-project knowledge.
+  All sub-projects inherit from this context.

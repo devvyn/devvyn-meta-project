@@ -11,6 +11,9 @@ This document defines the canonical coordination protocol for multi-agent collab
 in the devvyn-meta-project ecosystem. All sub-projects (AAFC Herbarium, S3 Image Dataset Kit, etc.)
 inherit these coordination guarantees.
 
+**Bridge Location**: `~/infrastructure/agent-bridge/bridge/` (operational infrastructure)
+**Scripts Location**: `~/infrastructure/agent-bridge/scripts/` (bridge operations)
+
 **v3.1 Update**: Immutable event sourcing replaces mutable context. State is derived, not stored. Corruption is impossible.
 
 ## Critical Problem Solved

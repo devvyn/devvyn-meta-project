@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-BRIDGE_ROOT="/Users/devvynmurphy/devvyn-meta-project/bridge"
+BRIDGE_ROOT="/Users/devvynmurphy/infrastructure/agent-bridge/bridge"
 EVENTS_DIR="$BRIDGE_ROOT/events"
 
 usage() {

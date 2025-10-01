@@ -2,7 +2,7 @@
 # Bridge Task Script - GPT Integration
 # Processes tasks from bridge inbox
 
-BRIDGE_ROOT="/Users/devvynmurphy/devvyn-meta-project/bridge"
+BRIDGE_ROOT="/Users/devvynmurphy/infrastructure/agent-bridge/bridge"
 AGENT_TYPE="${1:-gpt}"
 TASK_FILE="$2"
 

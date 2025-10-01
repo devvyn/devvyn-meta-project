@@ -2,7 +2,7 @@
 # Bridge Signal Script - GPT Integration
 # Signals agent availability and status
 
-BRIDGE_ROOT="/Users/devvynmurphy/devvyn-meta-project/bridge"
+BRIDGE_ROOT="/Users/devvynmurphy/infrastructure/agent-bridge/bridge"
 TIMESTAMP=$(date -Iseconds)
 AGENT_TYPE="${1:-gpt}"
 

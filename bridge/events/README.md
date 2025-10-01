@@ -26,6 +26,8 @@ No mutable context files. Only immutable history. State recreation is determinis
 |------|---------|---------|
 | `decision` | Strategic decision made | Framework v2.3 approved |
 | `pattern` | Pattern discovered/documented | OCR pipeline optimization |
+| `story` | Pattern + narrative + context | Command system proves valuable |
+| `story-mutation` | Story adaptation to new context | Deploy pattern adapted for research |
 | `state-change` | System state transition | Project promoted to Tier 1 |
 | `agent-registration` | Agent session start/end | ClaudeCode registered |
 | `message-sent` | Bridge communication | HIGH priority message to Chat |
@@ -68,6 +70,66 @@ YYYY-MM-DDTHH:MM:SS-TIMEZONE-[type]-[uuid].md
 ---
 
 **Immutability**: This event is append-only. Never modify. Corrections are new events.
+```
+
+### Story Event Structure (Embodies Harari's Nexus)
+
+**Philosophy**: Stories = patterns + narrative + context. Information creates reality through network propagation.
+
+```markdown
+# story: [Story Title]
+
+**Event-ID**: [timestamp]-story-[uuid]
+**Timestamp**: YYYY-MM-DDTHH:MM:SS-TIMEZONE
+**Type**: story
+**Discoverer**: [agent or human who discovered pattern]
+**Pattern-Source**: [Where pattern originated]
+**Related-Pattern**: [Link to pattern event if exists]
+
+## Story
+
+[Narrative: How was this pattern discovered? What problem did it solve?
+Why does it matter? Tell the story that makes the pattern memorable.]
+
+## Context
+
+**Where**: [Project/environment where pattern emerged]
+**When**: [Time period and conditions]
+**Why**: [Problem that needed solving]
+**Who**: [Agents/humans involved in discovery]
+
+## Evidence
+
+[Concrete data supporting the story's claims]
+- Adoption metrics
+- Success rates
+- Impact measurements
+- Verification status
+
+## Propagation History
+
+**Origin**: [Where story first emerged]
+**Spread to**: [Which projects/contexts adopted it]
+**Mutations**: [How story changed as it spread]
+**Current Reach**: [How widely adopted]
+
+## Memetic Fitness
+
+**Adoption Rate**: [Percentage of exposed contexts that adopted]
+**Success Rate**: [Percentage of adoptions that succeeded]
+**Impact Score**: [Measured improvement from adoption]
+**Fitness Score**: [adoption × success × impact]
+
+## Network Status
+
+**Belief State**: [Emerging | Believed | Verified | Canonical | Obsolete]
+**Verification**: [Unverified | Partially Verified | Proven | Disproven]
+**Reality-Construction**: [How this story shapes organizational coordination]
+
+---
+
+**Immutability**: This story is append-only. Mutations are new events.
+**Nexus**: Information creates reality through context + narrative + propagation.
 ```
 
 ## State Derivation

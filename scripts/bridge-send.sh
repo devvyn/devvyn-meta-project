@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-BRIDGE_ROOT="/Users/devvynmurphy/devvyn-meta-project/bridge"
+BRIDGE_ROOT="/Users/devvynmurphy/infrastructure/agent-bridge/bridge"
 SCRIPT_DIR="$(dirname "$0")"
 
 # Configuration

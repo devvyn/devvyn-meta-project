@@ -9,7 +9,19 @@
       "Bash(./scripts/bridge-register.sh register:*)",
       "Bash(./scripts/bridge-receive.sh:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(cat:*)",
+      "Bash(git reset:*)",
+      "Bash(chmod:*)",
+      "Bash(open ~/Desktop/20251001104900-0600-three-phase-transformation-complete.md)",
+      "Bash(for:*)",
+      "Bash(do sed -i '' 's|/Users/devvynmurphy/devvyn-meta-project/bridge|/Users/devvynmurphy/infrastructure/agent-bridge/bridge|g' \"$script\")",
+      "Bash(done)",
+      "Bash(~/infrastructure/agent-bridge/scripts/bridge-query-events.sh:*)",
+      "Bash(~/infrastructure/agent-bridge/scripts/bridge-derive-state.sh:*)",
+      "Bash(~/infrastructure/agent-bridge/scripts/append-event.sh:*)",
+      "Bash(~/devvyn-meta-project/scripts/bridge-send.sh code chat HIGH \"Bridge Migration Complete - State Sync Achieved\" /tmp/migration-complete.md)",
+      "Bash(git log:*)"
     ],
     "deny": [],
     "ask": []

@@ -33,6 +33,38 @@ generate_session_id() {
     echo "${agent}-${user}-${timestamp}"
 }
 
+show_human_context() {
+    local checkin_file="/Users/devvynmurphy/devvyn-meta-project/human-agency/daily-check-in.md"
+
+    if [ ! -f "$checkin_file" ]; then
+        return 0  # Silently skip if file doesn't exist
+    fi
+
+    echo ""
+    echo "👤 Human Context (from daily check-in):"
+    echo "========================================"
+
+    # Extract energy level
+    local energy=$(grep -A1 "^\*\*Current\*\*" "$checkin_file" | tail -1 | tr -d ' ')
+    if [ -n "$energy" ] && [ "$energy" != "_" ]; then
+        echo "Energy Level: $energy/10"
+    fi
+
+    # Extract what needs protecting
+    local protecting=$(sed -n '/## What Needs Protecting/,/## What Wants Creating/p' "$checkin_file" | sed '1d;$d' | grep -v '^_$' | grep -v '^\[' | tr -d '\n')
+    if [ -n "$protecting" ]; then
+        echo "Needs Protection: $protecting"
+    fi
+
+    # Extract what wants creating
+    local creating=$(sed -n '/## What Wants Creating/,/---/p' "$checkin_file" | sed '1d;$d' | grep -v '^_$' | grep -v '^\[' | tr -d '\n')
+    if [ -n "$creating" ]; then
+        echo "Wants Creating: $creating"
+    fi
+
+    echo ""
+}
+
 register_agent() {
     local agent="$1"
     local session_id="${2:-$(generate_session_id "$agent")}"
@@ -70,6 +102,10 @@ EOF
 
     echo "✅ Agent '$agent' registered with session: $session_id"
     echo "📁 Session file: $session_file"
+
+    # Show human context for awareness
+    show_human_context
+
     return 0
 }
 

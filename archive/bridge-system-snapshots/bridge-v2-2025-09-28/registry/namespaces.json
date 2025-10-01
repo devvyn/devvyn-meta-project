@@ -1,0 +1,66 @@
+{
+  "namespace_registry": {
+    "version": "3.0",
+    "last_updated": "2025-09-27T17:30:00Z",
+    "reserved_namespaces": {
+      "chat-": {
+        "owner": "claude_chat",
+        "registered": "2025-09-27T17:30:00Z",
+        "status": "active",
+        "collision_count": 0
+      },
+      "code-": {
+        "owner": "claude_code",
+        "registered": "2025-09-27T17:30:00Z",
+        "status": "active",
+        "collision_count": 0
+      },
+      "gpt-": {
+        "owner": "gpt_integration",
+        "registered": "2025-09-27T17:30:00Z",
+        "status": "active",
+        "collision_count": 0
+      },
+      "codex-": {
+        "owner": "codex_integration",
+        "registered": "2025-09-27T17:30:00Z",
+        "status": "active",
+        "collision_count": 0
+      },
+      "human-": {
+        "owner": "human_operator",
+        "registered": "2025-09-27T17:30:00Z",
+        "status": "active",
+        "collision_count": 0
+      },
+      "system-": {
+        "owner": "bridge_system",
+        "registered": "2025-09-27T17:30:00Z",
+        "status": "reserved",
+        "collision_count": 0
+      }
+    },
+    "available_prefixes": [
+      "test-",
+      "debug-",
+      "temp-",
+      "experimental-",
+      "plugin-",
+      "external-"
+    ],
+    "namespace_rules": {
+      "format": "[agent]-[timestamp]-[uuid4].md",
+      "max_length": 255,
+      "allowed_chars": "a-z0-9-_",
+      "case_sensitive": false,
+      "collision_resolution": "uuid_suffix"
+    }
+  },
+  "collision_prevention": {
+    "enabled": true,
+    "strategy": "namespace_isolation",
+    "uuid_generation": "uuid4",
+    "timestamp_precision": "seconds",
+    "validation_required": true
+  }
+}

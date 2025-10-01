@@ -1,0 +1,54 @@
+{
+  "framework_version": "2.1",
+  "last_updated": "2025-09-26T20:35:00Z",
+  "active_projects": {
+    "aafc_herbarium": {
+      "status": "development",
+      "framework_version": "2.1",
+      "last_session": "2025-09-26",
+      "next_priority": "OCR optimization implementation"
+    },
+    "meta_project": {
+      "status": "active",
+      "framework_version": "2.1",
+      "last_session": "2025-09-26",
+      "next_priority": "Bridge system validation"
+    }
+  },
+  "bridge_system": {
+    "status": "implemented",
+    "version": "1.0",
+    "last_message_id": 0,
+    "pending_inbox_count": 0,
+    "processed_messages_count": 0
+  },
+  "collaboration_metrics": {
+    "framework_evolution_cycles": 3,
+    "successful_handoffs": 2,
+    "identified_patterns": 4,
+    "agent_authority_violations": 0
+  },
+  "agent_authority_domains": {
+    "claude_code": [
+      "technical_implementation",
+      "code_optimization",
+      "pattern_recognition",
+      "system_architecture",
+      "testing_and_validation"
+    ],
+    "claude_chat": [
+      "strategic_planning",
+      "framework_evolution",
+      "priority_setting",
+      "stakeholder_coordination",
+      "portfolio_management"
+    ],
+    "human": [
+      "domain_expertise",
+      "quality_standards",
+      "business_requirements",
+      "final_approval",
+      "stakeholder_communication"
+    ]
+  }
+}

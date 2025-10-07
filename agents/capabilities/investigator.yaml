@@ -1,0 +1,306 @@
+# INVESTIGATOR Agent Capabilities
+# Platform: macOS LaunchAgent (scheduled background task)
+# Runtime: Bash script execution
+# Last Verified: 2025-10-06 (recently fixed)
+
+agent:
+  id: investigator
+  name: INVESTIGATOR Agent
+  version: "1.0"
+  platform: macos
+  runtime: launchagent_scheduled
+  schedule: "Daily at 9:00 AM"
+
+# Purpose
+purpose:
+  primary: "Pattern detection and problem investigation"
+  scope: "Event log analysis, defer queue insights, investigation queue management"
+
+  what_it_does:
+    - scan_event_log_for_patterns
+    - extract_insights_from_deferred_items
+    - detect_repetition_patterns  # 3x rule
+    - track_active_investigations
+    - generate_investigation_reports
+
+# Bridge System Integration
+bridge_integration:
+  status: partial
+  capabilities:
+    - receive_messages  # has inbox
+    - send_messages_potential  # not currently implemented
+
+  receive:
+    method: inbox_monitoring
+    path: ~/infrastructure/agent-bridge/bridge/inbox/investigator/
+    current_usage: limited  # doesn't process messages yet
+
+  send:
+    status: not_implemented
+    potential: "Could send investigation reports via bridge"
+    current: "Writes to Desktop instead"
+
+  limitations:
+    - primarily_standalone_operation
+    - minimal_bridge_integration_currently
+
+# File System Operations
+file_operations:
+  status: read_only
+  capabilities:
+    - read_event_log
+    - read_defer_queue
+    - read_investigation_queue
+    - read_pattern_library
+    - write_desktop_reports
+    - update_metrics_file
+
+  read_paths:
+    - ~/infrastructure/agent-bridge/bridge/events/
+    - ~/infrastructure/agent-bridge/bridge/defer-queue/
+    - ~/infrastructure/agent-bridge/bridge/queue/investigations/
+    - ~/devvyn-meta-project/knowledge-base/patterns/
+    - ~/devvyn-meta-project/status/investigator-metrics.json
+
+  write_paths:
+    - ~/Desktop/[timestamp]-investigator-session-report.md
+    - ~/devvyn-meta-project/status/investigator-metrics.json
+
+  tools:
+    - fd  # file discovery
+    - grep  # pattern matching
+    - jq  # JSON processing
+
+  limitations:
+    - no_file_modification
+    - no_event_creation
+    - report_only_mode
+
+# Command Execution
+command_execution:
+  status: limited
+  capabilities:
+    - bash_commands
+    - script_execution  # calls bridge-query-events.sh
+    - pipe_operations
+    - basic_analysis
+
+  available_tools:
+    - bash
+    - fd
+    - grep
+    - jq
+    - wc
+    - sort
+    - uniq
+    - stat
+
+  script_calls:
+    - ~/devvyn-meta-project/scripts/bridge-query-events.sh
+
+  limitations:
+    - timeout_protected  # 5 min max execution
+    - no_interactive_commands
+    - automated_execution_only
+
+# Pattern Detection
+pattern_detection:
+  status: active
+  capabilities:
+    - three_x_repetition_rule
+    - event_type_frequency_analysis
+    - defer_queue_value_extraction
+    - investigation_age_tracking
+
+  rules:
+    three_x_repetition:
+      threshold: 3
+      logic: "Event type repeated 3+ times in analysis window"
+      action: "Flag as pattern candidate"
+
+    defer_insights:
+      search_terms:
+        - pattern
+        - approach
+        - optimization
+        - architecture
+      action: "Count and report deferred insights"
+
+  analysis_window:
+    default: 7 days
+    configurable: "--days N flag"
+
+  output:
+    format: markdown_report
+    location: ~/Desktop/
+    naming: "[timestamp]-investigator-session-report.md"
+
+# Investigation Management
+investigation_management:
+  status: limited
+  capabilities:
+    - count_active_investigations
+    - track_investigation_age
+    - list_investigation_files
+
+  investigation_queue:
+    path: ~/infrastructure/agent-bridge/bridge/queue/investigations/active/
+    monitoring: age_tracking
+
+  cannot_do:
+    - create_investigations
+    - close_investigations
+    - modify_investigation_content
+
+  current_role: "Monitoring only"
+
+# Metrics Tracking
+metrics_tracking:
+  status: active
+  capabilities:
+    - update_investigation_counts
+    - track_patterns_detected
+    - timestamp_last_run
+    - categorize_by_type
+
+  metrics_file:
+    path: ~/devvyn-meta-project/status/investigator-metrics.json
+    fields:
+      - last_updated
+      - investigations_total
+      - investigations_by_type
+      - investigations_by_status
+
+  update_logic:
+    increment: investigations_total
+    categorize: by_type.pattern
+    status: active
+
+# System Control
+system_control:
+  status: none
+  capabilities: []
+
+  cannot_do:
+    - modify_launchagent
+    - control_other_agents
+    - system_administration
+
+# Autonomous Operation
+autonomous_operation:
+  status: active
+  schedule:
+    frequency: daily
+    time: "9:00 AM"
+    launchagent: com.devvyn.investigator
+
+  execution:
+    script: ~/devvyn-meta-project/scripts/investigator-session.sh
+    wrapper: ~/devvyn-meta-project/scripts/investigator-wrapper.sh
+    timeout: 5 minutes
+    retry: 3 attempts
+
+  fault_tolerance:
+    wrapper: true
+    retry_logic: true
+    error_logging: ~/devvyn-meta-project/logs/investigator.log
+
+  health_monitoring:
+    status_check: "launchctl list | grep investigator"
+    log_review: "tail ~/devvyn-meta-project/logs/investigator.log"
+    exit_code: "Should be 0"
+
+# Unique Strengths
+unique_strengths:
+  - scheduled_autonomous_execution
+  - pattern_detection_across_events
+  - defer_queue_value_extraction
+  - minimal_human_intervention
+  - comprehensive_reporting
+
+# Integration Patterns
+integration_patterns:
+  with_code:
+    relationship: "Code maintains INVESTIGATOR scripts"
+    coordination: "Code reads investigation reports"
+
+  with_chat:
+    potential: "Could send pattern reports to Chat for validation"
+    current: "Human reads reports, discusses with Chat"
+
+  with_human:
+    delivery: "Desktop markdown reports"
+    action: "Human reviews, decides on follow-up"
+
+# What INVESTIGATOR Cannot Do
+limitations:
+  coordination:
+    - no_active_bridge_participation
+    - cannot_respond_to_messages
+    - report_only_mode
+
+  analysis:
+    - no_deep_investigation  # shallow pattern detection only
+    - no_causal_analysis
+    - no_solution_proposals
+
+  action:
+    - cannot_create_investigations
+    - cannot_resolve_problems
+    - cannot_modify_system
+
+  design_constraint: "Detection only, not resolution"
+
+# Capability Discovery
+discovery:
+  how_to_check:
+    - "Read this file (investigator.yaml)"
+    - "Check manifest.yaml"
+    - "Read ~/devvyn-meta-project/agents/INVESTIGATOR_AGENT_INSTRUCTIONS.md"
+    - "./scripts/capability-check.sh investigator [query]"
+
+  operational_status:
+    - "launchctl list | grep investigator"
+    - "tail ~/devvyn-meta-project/logs/investigator.log"
+    - "cat ~/devvyn-meta-project/status/investigator-metrics.json"
+
+# Current Status
+current_status:
+  operational: true
+  last_fixed: "2025-10-06"
+  issue_resolved: "Syntax error line 73"
+  health: "Exit 0 (healthy)"
+
+  value_assessment:
+    status: "Monitoring for value (1-week validation)"
+    capabilities_confirmed: true
+    production_value: "To be determined"
+
+  next_review: "2025-10-13"
+
+# Recommended Enhancements
+recommended_enhancements:
+  bridge_integration:
+    - send_pattern_reports_to_chat
+    - enable_message_processing
+    - autonomous_coordination
+
+  analysis_depth:
+    - causal_pattern_detection
+    - cross_event_correlation
+    - trend_analysis
+
+  action_capability:
+    - create_investigation_tasks
+    - propose_solutions
+    - automated_remediation  # careful with this
+
+  note: "Enhancements require value validation first"
+
+# Version History
+version_history:
+  "1.0":
+    date: "2025-10-06"
+    changes: "Initial capability documentation"
+    verified_by: code-cli
+    status: "Recently fixed and operational"

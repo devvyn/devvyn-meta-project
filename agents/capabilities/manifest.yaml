@@ -1,0 +1,84 @@
+# Capability Manifest - Multi-Agent System
+# Version: 1.0
+# Last Updated: 2025-10-06
+
+version: "1.0"
+updated: "2025-10-06"
+
+# Agent context definitions
+agent_contexts:
+  - id: code-cli
+    name: "Claude Code CLI"
+    platform: macos
+    runtime: native_shell
+    capability_file: code-cli.yaml
+    status: active
+
+  - id: chat-desktop
+    name: "Claude Chat Desktop"
+    platform: macos
+    runtime: claude_app
+    capability_file: chat-desktop.yaml
+    status: active
+
+  - id: chat-mobile
+    name: "Claude Chat Mobile"
+    platform: ios
+    runtime: claude_app
+    capability_file: chat-mobile.yaml
+    status: active
+
+  - id: investigator
+    name: "INVESTIGATOR Agent"
+    platform: macos
+    runtime: launchagent_scheduled
+    capability_file: investigator.yaml
+    status: active
+
+# Capability categories
+capability_categories:
+  - bridge_integration
+  - file_operations
+  - command_execution
+  - web_access
+  - system_control
+  - code_execution
+  - git_operations
+
+# Cross-context compatibility matrix
+compatibility:
+  bridge_send:
+    code-cli: full
+    chat-desktop: full
+    chat-mobile: none
+    investigator: full
+
+  bridge_receive:
+    code-cli: full
+    chat-desktop: full
+    chat-mobile: read_only
+    investigator: full
+
+  file_write:
+    code-cli: full
+    chat-desktop: full
+    chat-mobile: none
+    investigator: full
+
+  git_operations:
+    code-cli: full
+    chat-desktop: none
+    chat-mobile: none
+    investigator: none
+
+  osascript:
+    code-cli: none
+    chat-desktop: full
+    chat-mobile: none
+    investigator: none
+
+  web_browsing:
+    code-cli: none
+    chat-desktop: full
+    chat-mobile: limited
+    investigator: none

@@ -1,0 +1,257 @@
+# Code Agent Capabilities - Claude Code CLI
+# Platform: macOS native shell
+# Runtime: Direct CLI execution
+# Last Verified: 2025-10-06
+
+agent:
+  id: code-cli
+  name: Claude Code CLI
+  version: "4.5"
+  platform: macos
+  runtime: native_shell
+
+# Bridge System Integration
+bridge_integration:
+  status: full
+  capabilities:
+    - send_messages
+    - receive_messages
+    - archive_messages
+    - atomic_operations
+
+  send:
+    method: direct_script_execution
+    script: ~/devvyn-meta-project/scripts/bridge-send.sh
+    example: "./scripts/bridge-send.sh code chat HIGH 'Title' message.md"
+
+  receive:
+    method: direct_script_execution
+    script: ~/devvyn-meta-project/scripts/bridge-receive.sh
+    example: "./scripts/bridge-receive.sh code"
+
+  limitations: []
+
+# File System Operations
+file_operations:
+  status: full
+  capabilities:
+    - read_any_accessible_file
+    - write_any_accessible_file
+    - delete_files
+    - move_files
+    - copy_files
+    - create_directories
+    - traverse_filesystem
+    - glob_patterns
+    - grep_content
+
+  accessible_paths:
+    - "~/devvyn-meta-project/"
+    - "~/Documents/GitHub/"
+    - "~/infrastructure/agent-bridge/"
+    - "~/Desktop/"
+    - "/tmp/"
+    - "~/.claude/"
+
+  tools:
+    read: Read
+    write: Write
+    edit: Edit
+    search: Glob
+    grep: Grep
+
+  limitations:
+    - system_directories_protected
+    - standard_permissions_apply
+
+# Command Execution
+command_execution:
+  status: full
+  capabilities:
+    - bash_commands
+    - script_execution
+    - background_processes
+    - piping_and_chaining
+    - environment_variables
+    - process_management
+
+  shell: zsh
+  os: Darwin 25.0.0
+
+  tools:
+    - fd  # file search (aliased as find)
+    - rg  # ripgrep
+    - uv  # python package manager
+    - git
+    - python3
+    - jq
+    - sed
+    - awk
+
+  examples:
+    - "fd '*.md' ~/Documents"
+    - "rg 'pattern' --type md"
+    - "git commit -m 'message'"
+    - "python3 script.py"
+
+  limitations:
+    - no_sudo_access
+    - launchctl_limited
+
+# Git Operations
+git_operations:
+  status: full
+  capabilities:
+    - commit
+    - push
+    - pull
+    - branch
+    - merge
+    - status
+    - diff
+    - log
+    - create_pr  # via gh CLI
+
+  tools:
+    - git
+    - gh  # GitHub CLI
+
+  examples:
+    - "git add . && git commit -m 'Update'"
+    - "git push origin main"
+    - "gh pr create --title 'Title' --body 'Description'"
+
+  limitations:
+    - requires_configured_auth
+    - follows_git_hooks
+
+# Code Execution
+code_execution:
+  status: full
+  capabilities:
+    - python_scripts
+    - bash_scripts
+    - testing_frameworks
+    - linting_tools
+    - build_systems
+
+  languages:
+    - python
+    - bash
+    - javascript  # via node
+    - typescript  # via tsc
+
+  examples:
+    - "python3 -m pytest tests/"
+    - "npm run build"
+    - "uv pip install package"
+
+  limitations:
+    - runtime_must_be_installed
+
+# System Control
+system_control:
+  status: limited
+  capabilities:
+    - launchctl_list
+    - environment_variables
+    - process_monitoring
+
+  cannot_do:
+    - load_unload_launchagents  # requires human
+    - system_preferences
+    - security_settings
+
+  limitations:
+    - no_admin_privileges
+    - human_required_for_infrastructure
+
+# Web Access
+web_access:
+  status: none
+  capabilities: []
+
+  cannot_do:
+    - web_browsing
+    - web_search
+    - url_fetching
+
+  workaround: Request Chat agent for web research
+
+# Platform-Specific
+platform_specific:
+  macos:
+    - bsd_utilities  # not GNU
+    - homebrew_tools
+    - zsh_aliases
+    - fd_as_find  # aliased
+
+  aliases:
+    find: fd
+    grep: rg  # sometimes
+
+  important_notes:
+    - "Use /usr/bin/find for BSD find"
+    - "Check tool with 'which' when uncertain"
+    - "fd and rg are preferred alternatives"
+
+# MCP Tools
+mcp_tools:
+  status: none
+  available: []
+
+  note: "Code CLI doesn't use MCP - direct system access instead"
+
+# Unique Strengths
+unique_strengths:
+  - Native shell execution (no container)
+  - Full git workflow integration
+  - Direct file system access
+  - Build and test automation
+  - CLI tool integration
+  - Background process management
+  - Atomic file operations
+
+# Integration Patterns
+integration_patterns:
+  with_chat:
+    send_technical_questions: false  # Chat has web access
+    send_implementation_results: true
+    receive_strategic_guidance: true
+
+  with_investigator:
+    receive_pattern_reports: true
+    send_implementation_requests: false  # INVESTIGATOR read-only bridge
+
+  with_human:
+    send_reports: true
+    send_approval_requests: true
+    receive_directives: true
+
+# Discovery
+discovery:
+  how_to_check_capabilities:
+    - "Read this file (code-cli.yaml)"
+    - "Check manifest.yaml for cross-context compatibility"
+    - "./scripts/capability-check.sh code-cli [query]"
+
+  session_startup:
+    - "Inherit from ~/.claude/CLAUDE.md"
+    - "Load ~/CLAUDE.md"
+    - "Load ~/devvyn-meta-project/CLAUDE.md"
+    - "Reference this capability file"
+
+# Version History
+version_history:
+  "1.0":
+    date: "2025-10-06"
+    changes: "Initial capability documentation"
+    verified_by: code-cli
+
+# Verification Evidence
+verification:
+  last_tested: "2025-10-06T21:36:02-06:00"
+  method: empirical_testing
+  confidence: 100
+  evidence_dir: ~/devvyn-meta-project/agents/capabilities/evidence/
+  auto_updated: true

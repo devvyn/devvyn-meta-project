@@ -1,0 +1,307 @@
+# Chat Agent Capabilities - Claude Chat Desktop
+# Platform: macOS Claude App
+# Runtime: MCP-enabled container + osascript
+# Last Verified: 2025-10-03 (from CHAT_CAPABILITIES.md)
+
+agent:
+  id: chat-desktop
+  name: Claude Chat Desktop
+  version: "3.5 Sonnet"
+  platform: macos
+  runtime: claude_app_with_mcp
+
+# Bridge System Integration
+bridge_integration:
+  status: full
+  capabilities:
+    - send_messages
+    - receive_messages
+    - archive_messages
+    - autonomous_coordination
+
+  send:
+    method: osascript_shell_execution
+    pattern: 'do shell script "cd ~/devvyn-meta-project && ./scripts/bridge-send.sh chat [target] [PRIORITY] ''Title'' /path/to/response.md"'
+    verified: "2025-10-03"
+
+  receive:
+    method: osascript_file_read
+    pattern: 'do shell script "ls ~/infrastructure/agent-bridge/bridge/inbox/chat/"'
+    autonomous: true
+
+  unique_strength: "No human mediation required for routine coordination"
+
+  limitations: []
+
+# File System Operations
+file_operations:
+  status: full
+  capabilities:
+    - read_files
+    - write_files
+    - edit_files
+    - delete_files
+    - move_files
+    - copy_files
+    - list_directories
+    - search_content
+
+  accessible_paths:
+    - "/tmp/"
+    - "~/Desktop/"
+    - "~/Documents/GitHub/"
+    - "~/devvyn-meta-project/"
+    - "~/infrastructure/agent-bridge/"
+
+  mcp_tools:
+    - mcp__filesystem
+
+  osascript_access: true
+
+  examples:
+    - 'do shell script "cat ~/infrastructure/agent-bridge/bridge/inbox/chat/message.md"'
+    - 'do shell script "ls ~/Documents/GitHub/"'
+
+  limitations:
+    - standard_filesystem_permissions
+    - no_system_directory_access
+
+# Command Execution
+command_execution:
+  status: full
+  capabilities:
+    - bash_via_osascript
+    - script_execution
+    - pipes_and_chaining
+    - background_processes
+
+  method: osascript
+  pattern: 'do shell script "[bash command]"'
+
+  tools_accessible:
+    - bash
+    - python3
+    - jq
+    - grep
+    - sed
+    - awk
+    - fd
+    - rg
+
+  examples:
+    - 'do shell script "~/devvyn-meta-project/scripts/bridge-query-events.sh --type story"'
+    - 'do shell script "grep -r ''PRIORITY: HIGH'' ~/infrastructure/agent-bridge/"'
+
+  limitations:
+    - container_isolation_for_some_operations
+    - script_must_be_accessible
+
+# Git Operations
+git_operations:
+  status: none
+  capabilities: []
+
+  cannot_do:
+    - commit
+    - push
+    - pull
+    - create_pr
+
+  workaround: "Create content, ask Code agent or human for git operations"
+
+  rationale: "Strategic agent, not implementation agent"
+
+# Code Execution
+code_execution:
+  status: limited
+  capabilities:
+    - python_scripts_via_osascript
+    - bash_scripts_via_osascript
+    - analysis_scripts
+
+  method: osascript
+
+  examples:
+    - 'do shell script "python3 /path/to/analysis.py"'
+
+  limitations:
+    - no_interactive_execution
+    - execution_environment_constraints
+
+# System Control
+system_control:
+  status: limited
+  capabilities:
+    - launchctl_list
+    - process_monitoring
+
+  cannot_do:
+    - load_unload_launchagents
+    - system_preferences
+    - infrastructure_changes
+
+  workaround: "Create automation scripts, ask human to execute"
+
+  limitations:
+    - no_admin_privileges
+    - security_boundaries_by_design
+
+# Web Access
+web_access:
+  status: full
+  capabilities:
+    - web_search
+    - url_fetching
+    - real_time_information
+    - technology_research
+
+  mcp_tools:
+    - mcp__web_search
+    - mcp__url_fetch
+
+  use_cases:
+    - current_information_lookup
+    - best_practice_research
+    - technology_investigation
+    - cross_reference_validation
+
+  limitations:
+    - standard_web_access_constraints
+
+# Platform-Specific - macOS Integration
+platform_specific:
+  macos_integration:
+    - osascript_execution
+    - mac_automation
+    - desktop_file_access
+
+  mcp_tools:
+    - mcp__mac_control  # KEY: enables osascript
+    - mcp__chrome_control  # browser automation
+    - mcp__pdf_tools  # PDF analysis
+    - mcp__kapture  # web scraping
+
+  security_model:
+    container: "File operation isolation"
+    osascript: "Direct host system access"
+    result: "Security + autonomous capability"
+
+# MCP Tools (Comprehensive)
+mcp_tools:
+  status: full
+  available:
+    - mcp__mac_control
+    - mcp__chrome_control
+    - mcp__pdf_tools
+    - mcp__filesystem
+    - mcp__kapture
+    - mcp__web_search  # likely available
+
+  key_enabler: mcp__mac_control
+  enables: "osascript → bridge integration → autonomous coordination"
+
+# Unique Strengths
+unique_strengths:
+  - Web access for research
+  - Strategic analysis and planning
+  - Cross-project pattern recognition
+  - Real-time information lookup
+  - PDF analysis capabilities
+  - Browser automation
+  - osascript for host system access
+  - Autonomous bridge coordination
+  - MCP tool ecosystem
+
+# Integration Patterns
+integration_patterns:
+  with_code:
+    receive_technical_results: true
+    send_strategic_guidance: true
+    send_approval_requests: false  # Code doesn't need approval for technical work
+    autonomous_coordination: true
+
+  with_investigator:
+    receive_pattern_reports: true
+    send_validation_results: true
+    strategic_priority_assessment: true
+
+  with_human:
+    strategic_questions: true
+    framework_evolution: true
+    portfolio_management: true
+    research_delivery: true
+
+# Workflow Patterns (Documented in CHAT_CAPABILITIES.md)
+workflow_patterns:
+  session_start_autonomous:
+    - check_inbox
+    - read_high_priority
+    - create_response
+    - send_via_bridge
+    - archive_original
+    - report_to_human_fyi_only
+
+  strategic_analysis:
+    - query_event_log
+    - check_story_propagation
+    - generate_reality_map
+    - read_project_context
+    - synthesize_recommendations
+
+  framework_evolution:
+    - read_framework_state
+    - analyze_usage_patterns
+    - propose_changes_to_human
+
+# Capability Discovery
+discovery:
+  how_to_check:
+    - "Read ~/devvyn-meta-project/agents/CHAT_CAPABILITIES.md (detailed docs)"
+    - "Read this file (chat-desktop.yaml)"
+    - "Check manifest.yaml for cross-context compatibility"
+    - "./scripts/capability-check.sh chat-desktop [query]"
+
+  session_startup:
+    - "Tool list from MCP"
+    - "Project knowledge from Chat Project CLAUDE.md"
+    - "Reference CHAT_CAPABILITIES.md"
+    - "Reference this capability file"
+
+  knowledge_persistence:
+    project_files: persist
+    tool_list: persists
+    session_memory: does_not_persist
+
+  therefore: "Document working patterns in Project CLAUDE.md and capability files"
+
+# What Chat CANNOT Do
+limitations:
+  system_administration:
+    - cannot_start_stop_launchagents
+    - limited_launchctl_access
+    - cannot_modify_system_config
+
+  security_boundaries:
+    - cannot_read_secrets  # by design
+    - credential_access_restricted
+    - production_changes_need_oversight
+
+  git_operations:
+    - cannot_commit
+    - cannot_push
+    - cannot_create_prs
+
+  rationale: "Appropriate security boundaries and role separation"
+
+# Version History
+version_history:
+  "1.0":
+    date: "2025-10-03"
+    changes: "Initial capability assessment completed"
+    verified_by: chat-desktop
+    documented_in: CHAT_CAPABILITIES.md
+
+  "1.1":
+    date: "2025-10-06"
+    changes: "Converted to YAML for cross-context discovery"
+    verified_by: code-cli

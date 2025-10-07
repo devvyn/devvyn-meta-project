@@ -1,0 +1,281 @@
+# Chat Agent Capabilities - Claude Chat Mobile (iPhone)
+# Platform: iOS Claude App
+# Runtime: Mobile container (constrained)
+# Last Verified: UNVERIFIED (speculative based on platform constraints)
+
+agent:
+  id: chat-mobile
+  name: Claude Chat Mobile
+  version: "iOS App"
+  platform: ios
+  runtime: claude_app_mobile
+  verification_status: unverified
+
+# IMPORTANT: These capabilities are ESTIMATED based on iOS constraints
+# Needs real-world testing to confirm
+
+# Bridge System Integration
+bridge_integration:
+  status: read_only
+  capabilities:
+    - read_messages_if_icloud_sync
+    - cannot_send_messages
+    - cannot_archive_messages
+
+  read:
+    method: icloud_file_sync
+    accessible_if: "~/infrastructure/agent-bridge/ is iCloud synced"
+    pattern: "Read-only file access via Files app integration"
+    verified: false
+
+  send:
+    status: none
+    reason: "No script execution on iOS"
+
+  limitations:
+    - no_osascript
+    - no_shell_execution
+    - no_file_write_capability
+    - read_only_coordination
+
+  workaround: "Use for reading/monitoring only, reply via desktop"
+
+# File System Operations
+file_operations:
+  status: limited
+  capabilities:
+    - read_files_via_files_app
+    - icloud_synced_paths_only
+    - cannot_write_to_filesystem
+    - cannot_execute_scripts
+
+  accessible_paths:
+    - "iCloud Drive synced folders (read-only)"
+    - "Possible: ~/Documents/ if iCloud enabled"
+
+  cannot_access:
+    - "/tmp/"
+    - "~/Desktop/"
+    - "Non-iCloud paths"
+    - "Script execution paths"
+
+  limitations:
+    - ios_sandbox
+    - read_only_access
+    - no_filesystem_write
+    - no_directory_traversal
+
+  verification_needed: true
+
+# Command Execution
+command_execution:
+  status: none
+  capabilities: []
+
+  cannot_do:
+    - execute_bash_commands
+    - run_scripts
+    - osascript
+    - any_shell_access
+
+  reason: "iOS doesn't provide shell access"
+
+  limitations:
+    - platform_constraint_fundamental
+
+# Git Operations
+git_operations:
+  status: none
+  capabilities: []
+
+  cannot_do:
+    - any_git_operations
+
+  reason: "No shell access, no git binary"
+
+# Code Execution
+code_execution:
+  status: none
+  capabilities: []
+
+  cannot_do:
+    - execute_python
+    - execute_bash
+    - run_analysis_scripts
+
+  reason: "iOS app sandbox prevents code execution"
+
+# System Control
+system_control:
+  status: none
+  capabilities: []
+
+  cannot_do:
+    - any_system_control
+    - launchctl
+    - process_management
+
+  reason: "iOS platform constraints"
+
+# Web Access
+web_access:
+  status: likely_available
+  capabilities:
+    - web_search_probable
+    - url_fetching_probable
+    - real_time_information
+
+  verification_status: unverified
+
+  use_cases:
+    - research
+    - information_lookup
+    - current_events
+
+  limitations:
+    - mobile_network_dependent
+    - app_capabilities_unknown
+
+# Platform-Specific - iOS
+platform_specific:
+  ios_constraints:
+    - app_sandbox
+    - no_shell_access
+    - no_filesystem_write
+    - no_script_execution
+    - icloud_sync_only
+
+  possible_mcp_tools:
+    status: unknown
+    note: "MCP availability on iOS unclear"
+
+  integration_limitations:
+    - read_only_bridge_at_best
+    - no_autonomous_coordination
+    - monitoring_only_role
+
+# MCP Tools
+mcp_tools:
+  status: unknown
+  available: []
+
+  note: "MCP tool availability on iOS needs verification"
+
+# Unique Strengths
+unique_strengths:
+  - mobile_accessibility
+  - anywhere_monitoring
+  - conversation_continuity
+  - web_research_on_the_go
+
+# Realistic Role
+realistic_role:
+  primary: "Read-only monitoring and conversation"
+
+  can_do:
+    - strategic_thinking
+    - conversation_with_human
+    - web_research  # if available
+    - read_bridge_messages  # if iCloud synced
+
+  cannot_do:
+    - send_bridge_messages
+    - file_operations
+    - script_execution
+    - autonomous_coordination
+
+  use_case: "Mobile consulting - read bridge state, discuss with human, execute via desktop later"
+
+# Integration Patterns
+integration_patterns:
+  with_code:
+    receive_messages: possibly_read_only
+    send_messages: no
+
+  with_chat_desktop:
+    relationship: same_project_different_context
+    coordination: "Read on mobile, act on desktop"
+
+  with_investigator:
+    receive_reports: possibly_read_only
+
+  with_human:
+    conversation: yes
+    strategic_discussion: yes
+    execution: "Defer to desktop or code agent"
+
+# Capability Discovery
+discovery:
+  how_to_check:
+    - "Read this file (chat-mobile.yaml)"
+    - "Test file access via iOS Files app"
+    - "Test web access capabilities"
+    - "Verify MCP tool availability"
+
+  verification_needed:
+    - can_read_icloud_synced_bridge_messages
+    - web_access_available
+    - mcp_tools_available
+    - any_file_write_capability
+
+  session_startup:
+    - "Same Project knowledge as desktop"
+    - "Limited tool availability"
+    - "Read this capability file to know constraints"
+
+# What Mobile Chat CANNOT Do
+limitations:
+  fundamental:
+    - no_file_write
+    - no_script_execution
+    - no_shell_access
+    - no_bridge_send
+
+  platform_constraints:
+    - ios_sandbox
+    - no_filesystem_apis
+    - app_container_isolation
+
+  coordination_impact:
+    - read_only_participant
+    - cannot_autonomously_coordinate
+    - discussion_only_role
+
+# Recommended Usage
+recommended_usage:
+  on_the_go:
+    - "Check bridge inbox (if synced)"
+    - "Discuss strategy with human"
+    - "Research via web (if available)"
+    - "Plan work for desktop session"
+
+  not_recommended:
+    - "Attempting file operations"
+    - "Trying to send bridge messages"
+    - "Autonomous coordination"
+    - "Script execution"
+
+# Testing Needed
+testing_needed:
+  items:
+    - verify_icloud_sync_accessibility
+    - test_files_app_integration
+    - check_web_access
+    - confirm_mcp_tools
+    - document_actual_capabilities
+
+  test_plan:
+    - "Open Claude iOS app"
+    - "Try reading ~/infrastructure/agent-bridge/bridge/inbox/chat/ via Files app"
+    - "Test web search"
+    - "Document results"
+    - "Update this file with verified capabilities"
+
+# Version History
+version_history:
+  "1.0":
+    date: "2025-10-06"
+    changes: "Initial speculative documentation"
+    verified_by: code-cli
+    verification_status: unverified
+    next_step: "Real-world testing on iPhone"

@@ -9,6 +9,7 @@ contexts:
   - security_architecture
   - knowledge_base_infrastructure
   - claude_code_hooks
+  - accessibility_driven_design
 
 people:
   - me: "Devvyn Murphy"
@@ -33,3 +34,16 @@ notes: |
   This is the coordination layer for all sub-projects.
   Focus: Infrastructure, patterns, cross-project knowledge.
   All sub-projects inherit from this context.
+
+patterns:
+  accessibility_driven_design:
+    source: "AAFC Herbarium DWC Extraction 2025"
+    location: ".kb-context/patterns/accessibility-driven-design.md"
+    inherited_by:
+      - "Barkour (universal keyboard input, keyboard-first design)"
+    principles:
+      - "Information parity across all sensory modalities"
+      - "Universal keyboard input (layout-agnostic)"
+      - "Keyboard-first, mouse enhanced"
+      - "Expert-first workflow optimization"
+      - "Accessibility as architecture, not add-on"

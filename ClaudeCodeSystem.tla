@@ -6,7 +6,7 @@ Replace(str, oldStr, newStr) == newStr  \* Simplified for model checking
 
 CONSTANTS
     Tools,           \* Set of available tools: {Read, Write, Edit, Bash, Task, Grep, Glob, WebFetch, TodoWrite, Bridge}
-    Agents,          \* Set of active agents: {ClaudeCode, ClaudeChat, Human}
+    Agents,          \* Set of active agents: {ClaudeCode, ClaudeChat, Human, Hopper, Investigator}
     Files,           \* Set of file paths
     Priorities,      \* Set of message priorities: {CRITICAL, HIGH, NORMAL, INFO}
     Contents,        \* Set of possible file contents
@@ -24,7 +24,8 @@ VARIABLES
 
 \* Agent states
 AgentStates == {"Idle", "ReadingFiles", "WritingFiles", "ProcessingTools",
-                "CheckingBridge", "ProcessingMessages", "UpdatingContext"}
+                "CheckingBridge", "ProcessingMessages", "UpdatingContext",
+                "Investigating", "PatternScanning", "RoutingDecision"}
 
 \* Tool execution states
 ToolStates == {"None", "Read", "Write", "Edit", "Bash", "Task", "Grep",
@@ -157,6 +158,16 @@ AgentAuthorityInvariant ==
          /\ (msg.sender = "ClaudeChat" /\ msg.recipient = "ClaudeCode") =>
             msg.content \in {"strategic_planning", "framework_evolution",
                            "priority_setting", "stakeholder_coordination"}
+         /\ (msg.sender = "Hopper") =>
+            msg.priority \in {"NORMAL", "INFO"}  \* Hopper only sends non-urgent messages
+         /\ (msg.recipient = "Hopper" /\ msg.priority = "CRITICAL") =>
+            FALSE  \* Hopper should not receive CRITICAL messages (escalate to agents)
+         /\ (msg.sender = "Investigator") =>
+            msg.content \in {"pattern_detected", "anomaly_flagged", "investigation_complete",
+                           "solution_proposed", "knowledge_extracted"}
+         /\ (msg.recipient = "Investigator") =>
+            msg.content \in {"investigation_requested", "pattern_candidate",
+                           "anomaly_alert", "evidence_needed"}
 
 \* Safety properties
 NoDataLoss ==

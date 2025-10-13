@@ -1,0 +1,20 @@
+# Coordination Intelligence Documents
+# Root Protocols
+/Users/devvynmurphy/devvyn-meta-project/COORDINATION_PROTOCOL.md
+/Users/devvynmurphy/devvyn-meta-project/AUTONOMOUS_EXPLORATION_FRAMEWORK.md
+/Users/devvynmurphy/devvyn-meta-project/BRIDGE_SPEC_PROTOCOL.md
+/Users/devvynmurphy/devvyn-meta-project/RESOURCE_ACCESS_PROTOCOL.md
+/Users/devvynmurphy/devvyn-meta-project/STORY_PROPAGATION_SYSTEM.md
+/Users/devvynmurphy/devvyn-meta-project/PATTERNS.md
+/Users/devvynmurphy/devvyn-meta-project/CLAUDE.md
+# Pattern Documents
+/Users/devvynmurphy/devvyn-meta-project/knowledge-base/patterns/collective-resource-provisioning.md
+/Users/devvynmurphy/devvyn-meta-project/knowledge-base/patterns/scientific-provenance-pattern.md
+/Users/devvynmurphy/devvyn-meta-project/knowledge-base/patterns/information-parity-design.md
+/Users/devvynmurphy/devvyn-meta-project/knowledge-base/patterns/wisdom-extraction-philosophy.md
+/Users/devvynmurphy/devvyn-meta-project/knowledge-base/patterns/streaming-event-architecture.md
+/Users/devvynmurphy/devvyn-meta-project/knowledge-base/patterns/secure-api-access.md
+/Users/devvynmurphy/devvyn-meta-project/knowledge-base/patterns/work-session-accountability.md
+/Users/devvynmurphy/devvyn-meta-project/knowledge-base/patterns/aafc-infrastructure-contribution-asset.md
+/Users/devvynmurphy/devvyn-meta-project/knowledge-base/patterns/repository-cleanup-strategy.md
+/Users/devvynmurphy/devvyn-meta-project/knowledge-base/patterns/empirically-verifiable-ai-self-reference.md

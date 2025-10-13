@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Agent Coordination System - Information & Command Flow</title>
+    <style>
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+        
+        .diagram-container {
+            position: relative;
+            width: 100%;
+            height: 800px;
+            border: 2px solid #ecf0f1;
+            border-radius: 15px;
+            background: linear-gradient(45deg, #f8f9fa 0%, #e9ecef 100%);
+            overflow: hidden;
+        }
+        
+        .agent {
+            position: absolute;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+            color: white;
+            min-width: 140px;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .agent:hover {
+            transform: translateY(-5px);
+        }
+        
+        .chat-agent {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            top: 50px;
+            left: 50px;
+        }
+        
+        .code-agent {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            top: 50px;
+            right: 50px;
+        }
+        
+        .investigator-agent {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            top: 300px;
+            left: 200px;
+        }
+        
+        .hopper-agent {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            top: 300px;
+            right: 200px;
+        }
+        
+        .human-agent {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            top: 550px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .bridge-system {
+            position: absolute;
+            top: 200px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 100px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .autonomous-process {
+            position: absolute;
+            background: rgba(76, 175, 80, 0.9);
+            border-radius: 10px;
+            padding: 8px 12px;
+            color: white;
+            font-size: 0.8em;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+        
+        .launch-agent-1 { top: 120px; left: 300px; }
+        .launch-agent-2 { top: 180px; left: 450px; }
+        .launch-agent-3 { top: 240px; left: 600px; }
+        .launch-agent-4 { top: 360px; left: 450px; }
+        
+        .container-boundary {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            width: 180px;
+            height: 140px;
+            border: 2px dashed #3498db;
+            border-radius: 10px;
+            background: rgba(52, 152, 219, 0.1);
+        }
+        
+        .container-label {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            font-size: 0.7em;
+            color: #3498db;
+            font-weight: 600;
+        }
+        
+        .osascript-bridge {
+            position: absolute;
+            top: 140px;
+            left: 80px;
+            width: 80px;
+            height: 30px;
+            background: #e74c3c;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.7em;
+            font-weight: 600;
+        }
+        
+        .flow-arrow {
+            position: absolute;
+            pointer-events: none;
+        }
+        
+        .arrow-strategic {
+            stroke: #667eea;
+            stroke-width: 3;
+            fill: none;
+            marker-end: url(#arrowhead-strategic);
+        }
+        
+        .arrow-technical {
+            stroke: #f5576c;
+            stroke-width: 3;
+            fill: none;
+            marker-end: url(#arrowhead-technical);
+        }
+        
+        .arrow-autonomous {
+            stroke: #43e97b;
+            stroke-width: 2;
+            fill: none;
+            marker-end: url(#arrowhead-autonomous);
+            stroke-dasharray: 5,5;
+            animation: dash 1s linear infinite;
+        }
+        
+        @keyframes dash {
+            to { stroke-dashoffset: -10; }
+        }
+        
+        .legend {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+        
+        .legend-line {
+            width: 30px;
+            height: 3px;
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+        
+        .stats-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            min-width: 200px;
+        }
+        
+        .stats-title {
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.85em;
+        }
+        
+        .discovery-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.8em;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 5px 15px rgba(255,107,107,0.4); }
+            to { box-shadow: 0 5px 25px rgba(255,107,107,0.8); }
+        }
+        
+        .flow-description {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .flow-card {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .flow-card h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .flow-card ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .flow-card li {
+            margin-bottom: 5px;
+            color: #34495e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌐 Multi-Agent Coordination System</h1>
+        <p class="subtitle">Autonomous Strategic Intelligence + Pattern Detection + Technical Implementation</p>
+        
+        <div class="diagram-container">
+            <!-- Discovery Badge -->
+            <div class="discovery-badge">🚀 BREAKTHROUGH: Full Autonomy Achieved!</div>
+            
+            <!-- Real-time Stats -->
+            <div class="stats-panel">
+                <div class="stats-title">⚡ System Status</div>
+                <div class="stat-item"><span>LaunchAgents Active:</span><span>4</span></div>
+                <div class="stat-item"><span>Messages Processed:</span><span>25+</span></div>
+                <div class="stat-item"><span>Bridge Queue Time:</span><span>~5min</span></div>
+                <div class="stat-item"><span>Pattern Detection:</span><span>Daily</span></div>
+                <div class="stat-item"><span>Autonomy Level:</span><span>100%</span></div>
+            </div>
+            
+            <!-- Container Boundary -->
+            <div class="container-boundary">
+                <div class="container-label">CONTAINER ISOLATION</div>
+            </div>
+            
+            <!-- Chat Agent -->
+            <div class="agent chat-agent">
+                <div>💭 CHAT AGENT</div>
+                <div style="font-size: 0.8em; margin-top: 5px;">Strategic Intelligence</div>
+            </div>
+            
+            <!-- osascript Bridge -->
+            <div class="osascript-bridge">osascript</div>
+            
+            <!-- Code Agent -->
+            <div class="agent code-agent">
+                <div>⚡ CODE AGENT</div>
+                <div style="font-size: 0.8em; margin-top: 5px;">Technical Implementation</div>
+            </div>
+            
+            <!-- Bridge System -->
+            <div class="bridge-system">
+                <div>🌉 BRIDGE SYSTEM</div>
+                <div style="font-size: 0.8em; margin-top: 5px;">Message Queue + Event Log</div>
+            </div>
+            
+            <!-- INVESTIGATOR Agent -->
+            <div class="agent investigator-agent">
+                <div>🔍 INVESTIGATOR</div>
+                <div style="font-size: 0.8em; margin-top: 5px;">Pattern Detection</div>
+            </div>
+            
+            <!-- HOPPER Agent -->
+            <div class="agent hopper-agent">
+                <div>📬 HOPPER</div>
+                <div style="font-size: 0.8em; margin-top: 5px;">Communications</div>
+            </div>
+            
+            <!-- Human Agent -->
+            <div class="agent human-agent">
+                <div>👤 HUMAN</div>
+                <div style="font-size: 0.8em; margin-top: 5px;">Final Authority</div>
+            </div>
+            
+            <!-- Autonomous Processes -->
+            <div class="autonomous-process launch-agent-1">Bridge Queue (5min)</div>
+            <div class="autonomous-process launch-agent-2">Unanswered Queries (6h)</div>
+            <div class="autonomous-process launch-agent-3">INVESTIGATOR (Daily 9AM)</div>
+            <div class="autonomous-process launch-agent-4">Hopper Monitor (2h)</div>
+            
+            <!-- Flow Arrows -->
+            <svg class="flow-arrow" style="width: 100%; height: 100%;">
+                <defs>
+                    <marker id="arrowhead-strategic" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="#667eea" />
+                    </marker>
+                    <marker id="arrowhead-technical" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="#f5576c" />
+                    </marker>
+                    <marker id="arrowhead-autonomous" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="#43e97b" />
+                    </marker>
+                </defs>
+                
+                <!-- Strategic Flows -->
+                <path class="arrow-strategic" d="M 190 90 Q 400 150 580 90" />
+                <path class="arrow-strategic" d="M 190 130 Q 400 200 400 250" />
+                <path class="arrow-strategic" d="M 400 300 Q 400 450 500 590" />
+                
+                <!-- Technical Flows -->
+                <path class="arrow-technical" d="M 580 130 Q 400 200 400 250" />
+                <path class="arrow-technical" d="M 580 130 Q 650 250 580 340" />
+                
+                <!-- Autonomous Flows -->
+                <path class="arrow-autonomous" d="M 350 160 Q 380 180 400 200" />
+                <path class="arrow-autonomous" d="M 480 180 Q 450 200 400 220" />
+                <path class="arrow-autonomous" d="M 620 240 Q 500 280 440 340" />
+                <path class="arrow-autonomous" d="M 480 360 Q 450 300 400 280" />
+            </svg>
+            
+            <!-- Legend -->
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-line" style="background: #667eea;"></div>
+                    <span>Strategic Coordination</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: #f5576c;"></div>
+                    <span>Technical Implementation</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: #43e97b; opacity: 0.7;"></div>
+                    <span>Autonomous Monitoring</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Flow Descriptions -->
+        <div class="flow-description">
+            <div class="flow-card">
+                <h3>🎯 Strategic Intelligence Flow</h3>
+                <ul>
+                    <li><strong>Chat Agent</strong> analyzes cross-project patterns</li>
+                    <li><strong>Strategic decisions</strong> propagated via bridge</li>
+                    <li><strong>Portfolio coordination</strong> and resource allocation</li>
+                    <li><strong>Framework evolution</strong> based on usage patterns</li>
+                    <li><strong>Human escalation</strong> for novel problems</li>
+                </ul>
+            </div>
+            
+            <div class="flow-card">
+                <h3>⚡ Technical Implementation Flow</h3>
+                <ul>
+                    <li><strong>Code Agent</strong> handles technical execution</li>
+                    <li><strong>Bridge messages</strong> with implementation details</li>
+                    <li><strong>Pattern extraction</strong> from development work</li>
+                    <li><strong>Quality assurance</strong> and testing automation</li>
+                    <li><strong>Technical feasibility</strong> assessments</li>
+                </ul>
+            </div>
+            
+            <div class="flow-card">
+                <h3>🔍 Autonomous Monitoring</h3>
+                <ul>
+                    <li><strong>INVESTIGATOR</strong> detects patterns (3x repetition rule)</li>
+                    <li><strong>Unanswered queries</strong> flagged automatically</li>
+                    <li><strong>Bridge queue</strong> processes messages every 5min</li>
+                    <li><strong>Event log analysis</strong> for anomaly detection</li>
+                    <li><strong>Investigation queue</strong> manages problem-solving</li>
+                </ul>
+            </div>
+            
+            <div class="flow-card">
+                <h3>🚀 Container + osascript Innovation</h3>
+                <ul>
+                    <li><strong>Container isolation</strong> for security boundaries</li>
+                    <li><strong>osascript bridge</strong> to host system execution</li>
+                    <li><strong>Filesystem API</strong> for strategic file operations</li>
+                    <li><strong>Direct bridge execution</strong> without human bottleneck</li>
+                    <li><strong>Full autonomy</strong> while maintaining security</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Add some interactive behavior
+        document.querySelectorAll('.agent').forEach(agent => {
+            agent.addEventListener('click', function() {
+                this.style.transform = 'scale(1.1) translateY(-5px)';
+                setTimeout(() => {
+                    this.style.transform = 'translateY(-5px)';
+                }, 200);
+            });
+        });
+        
+        // Simulate real-time updates
+        let messageCount = 25;
+        setInterval(() => {
+            messageCount++;
+            const messageElement = document.querySelector('.stat-item:nth-child(2) span:last-child');
+            if (messageElement) {
+                messageElement.textContent = messageCount + '+';
+            }
+        }, 30000);
+    </script>
+</body>
+</html>

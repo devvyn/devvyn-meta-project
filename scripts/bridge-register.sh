@@ -106,6 +106,42 @@ EOF
     # Show human context for awareness
     show_human_context
 
+    # Auto-check and process inbox for pending messages
+    local inbox_dir="$BRIDGE_ROOT/inbox/$agent"
+    if [ -d "$inbox_dir" ]; then
+        local pending_count=$(ls -1 "$inbox_dir"/*.md 2>/dev/null | grep -v "^_" | wc -l | tr -d ' ')
+        if [ "$pending_count" -gt 0 ]; then
+            echo ""
+            echo "📬 Processing $pending_count pending message(s)..."
+
+            # Auto-process messages (show summaries only)
+            local scripts_dir="/Users/devvynmurphy/devvyn-meta-project/scripts"
+            if [ -x "$scripts_dir/bridge-receive.sh" ]; then
+                for i in $(seq 1 $pending_count); do
+                    echo "   Message $i/$pending_count:"
+                    "$scripts_dir/bridge-receive.sh" "$agent" 2>&1 | grep -E "^(From|Subject|Priority):" | sed 's/^/     /'
+                done
+                echo ""
+                echo "✅ Inbox processed"
+            else
+                echo "   Manual processing required:"
+                echo "   Run: ~/devvyn-meta-project/scripts/bridge-receive.sh $agent"
+            fi
+            echo ""
+        fi
+    fi
+
+    # Show defer queue status
+    local defer_root="$BRIDGE_ROOT/defer-queue"
+    if [ -d "$defer_root" ] && [ -f "$defer_root/index.json" ]; then
+        local defer_count=$(jq '.deferred_items | length' "$defer_root/index.json" 2>/dev/null || echo "0")
+        if [ "$defer_count" -gt 0 ]; then
+            echo "📋 Defer Queue: $defer_count item(s) awaiting future action"
+            echo "   Review: ~/devvyn-meta-project/scripts/review-deferred.sh"
+            echo ""
+        fi
+    fi
+
     return 0
 }
 

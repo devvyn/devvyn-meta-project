@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "click-elimination": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/Users/devvynmurphy/devvyn-meta-project",
+        "run",
+        "python",
+        "-m",
+        "mcp.servers.click_elimination_server"
+      ]
+    }
+  }
+}

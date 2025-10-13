@@ -30,7 +30,8 @@
   "exampleProjects": {
     "scientificDataExtraction": "OCR pipeline with curator validation",
     "documentationSystems": "Automated generation with human oversight",
-    "projectManagement": "Tiered capacity with specification-driven development"
+    "projectManagement": "Tiered capacity with specification-driven development",
+    "rapidPrototyping": "Battlezone game recreation - DAG workflow automation example (~/battlezone-reference/)"
   },
 
   "nextEvolution": {

@@ -1,0 +1,260 @@
+# System Capabilities Ontology
+# Purpose: Facts about Devvyn's development environment
+# Usage: Agents query this instead of pondering/scouring
+
+version: "1.0"
+last_updated: "2025-10-02"
+machine: "Devvyn's MacBook Air M1"
+
+## Operating System
+os:
+  name: "macOS"
+  version: "26.0.1"
+  build: "25A362"
+  kernel: "Darwin 25.0.0"
+  architecture: "arm64"
+  chip: "Apple M1 (T8103)"
+  type: "Apple Silicon"
+
+## Scheduling Systems
+scheduling:
+  preferred: "launchd"
+  available:
+    - name: "launchd"
+      status: "active"
+      preferred: true
+      config_location: "~/Library/LaunchAgents/"
+      format: "plist (XML)"
+      capabilities:
+        - "Calendar-based scheduling (daily, weekly, specific times)"
+        - "Watchpath monitoring (file change triggers)"
+        - "Queue directories (trigger on new files)"
+        - "Run at load (immediate execution on registration)"
+        - "Standard output/error logging"
+        - "Environment variable support"
+        - "Working directory specification"
+      commands:
+        load: "launchctl load ~/Library/LaunchAgents/[plist]"
+        unload: "launchctl unload ~/Library/LaunchAgents/[plist]"
+        list: "launchctl list | grep com.devvyn"
+        start: "launchctl start [label]"
+        stop: "launchctl stop [label]"
+      example_file: "~/Library/LaunchAgents/com.devvyn.voicememos.offload.plist"
+
+    - name: "cron"
+      status: "available"
+      preferred: false
+      reason: "launchd is macOS native, better integrated"
+      location: "/usr/sbin/cron"
+      config_method: "crontab -e"
+      current_config: "none (no crontab for devvynmurphy)"
+      capabilities:
+        - "Time-based scheduling only"
+        - "No native output logging (requires redirection)"
+        - "Traditional Unix format"
+      note: "Deprecated on macOS in favor of launchd"
+
+## Package Managers
+package_managers:
+  preferred: "uv"
+  available:
+    - name: "uv"
+      purpose: "Python package management"
+      location: "/opt/homebrew/bin/uv"
+      preferred: true
+
+    - name: "Homebrew"
+      purpose: "System-level packages"
+      location: "/opt/homebrew/bin/brew"
+      prefix: "/opt/homebrew"
+
+    - name: "pip"
+      purpose: "Python packages (legacy)"
+      note: "Use uv instead"
+
+## Shell Environment
+shell:
+  default: "zsh"
+  version: "zsh 5.9"
+  config_files:
+    - "~/.zshrc"
+    - "~/.zprofile"
+  aliases:
+    find: "fd"  # Shell alias redirects find to fd
+    grep: "rg"  # May be aliased (check with 'alias | grep grep')
+
+## File System Tools
+file_tools:
+  search:
+    preferred: "fd"
+    location: "/opt/homebrew/bin/fd"
+    note: "BSD find at /usr/bin/find, aliased to fd in shell"
+
+  text_search:
+    preferred: "rg"
+    name: "ripgrep"
+    location: "/opt/homebrew/bin/rg"
+    note: "NOT GNU grep - uses ripgrep syntax"
+
+  find_system:
+    type: "BSD find"
+    location: "/usr/bin/find"
+    note: "NOT GNU find - different syntax, invocation via shell may call fd alias"
+
+## Python Environment
+python:
+  version: "3.11+"
+  management: "uv"
+  virtual_environments: "venv (via uv)"
+  standard: "Python 3.11+ standardized across all projects"
+
+## Development Locations
+paths:
+  meta_project: "~/devvyn-meta-project"
+  coding_projects: "~/Documents/GitHub/"
+  bridge_infrastructure: "~/infrastructure/agent-bridge/"
+  desktop: "~/Desktop"  # Temporary workspace for active information
+
+  projects:
+    aafc_herbarium: "~/Documents/GitHub/aafc-herbarium-dwc-extraction-2025/"
+    s3_kit: "~/Documents/GitHub/s3-image-dataset-kit/"
+    python_toolbox: "~/Documents/GitHub/python-toolbox-devvyn/"
+    claude_code_hooks: "~/Documents/GitHub/claude-code-hooks/"
+
+## Agent Infrastructure
+agents:
+  bridge_system:
+    version: "v3.1"
+    location: "~/infrastructure/agent-bridge/bridge/"
+    scripts: "~/infrastructure/agent-bridge/scripts/"
+    capabilities: "Collision-safe async messaging, event sourcing"
+
+  registered_agents:
+    - "ClaudeCode"
+    - "ClaudeChat"
+    - "Human"
+    - "Hopper"
+    - "Investigator"
+    - "GPT"
+    - "Codex"
+
+  agent_instructions:
+    location: "~/devvyn-meta-project/agents/"
+    files:
+      - "CHAT_AGENT_INSTRUCTIONS.md"
+      - "HOPPER_AGENT_INSTRUCTIONS.md"
+      - "INVESTIGATOR_AGENT_INSTRUCTIONS.md"
+      - "GPT_AGENT_INSTRUCTIONS.md"
+      - "CODEX_AGENT_INSTRUCTIONS.md"
+
+## User Preferences (from CLAUDE.md files)
+user_preferences:
+  output_format:
+    long_content: "Desktop markdown (>24 lines)"
+    naming: "YYYYMMDDHHMMSS-TIMEZONE-description.md"
+    viewer: "Marked 2 (auto-opens on Desktop saves)"
+
+  accessibility:
+    visual: "Richly formatted (Marked 2)"
+    audio: "Text-to-speech optimized"
+
+  documentation:
+    policy: "Never create unsolicited documentation"
+    create_only_when: "Explicitly requested by user"
+
+  commit_messages:
+    format: "emoji + description + Co-Authored-By: Claude"
+    examples:
+      feature: "🔬 Add OCR pipeline"
+      organization: "📁 Restructure bridge system"
+      bugfix: "🐛 Fix race condition in queue"
+
+## Available Commands
+commands:
+  meta_project:
+    - "/deploy"
+    - "/bridge-agent-create"
+    - "/session-handoff"
+    - "/sync-with-native"
+
+  scripts:
+    bridge_send: "~/devvyn-meta-project/scripts/bridge-send.sh"
+    bridge_receive: "~/devvyn-meta-project/scripts/bridge-receive.sh"
+    bridge_register: "~/devvyn-meta-project/scripts/bridge-register.sh"
+    pattern_scan: "~/infrastructure/agent-bridge/scripts/bridge-pattern-scan.sh"
+    queries_monitor: "~/devvyn-meta-project/scripts/unanswered-queries-monitor.sh"
+    hopper_reviews: "~/devvyn-meta-project/scripts/hopper-monitor-reviews.sh"
+
+## Installed Software (Common)
+software:
+  editors:
+    - "Cursor (AI-enhanced IDE)"
+    - "Claude Code (AI coding agent)"
+
+  documentation:
+    - "Marked 2 (Markdown viewer)"
+
+  version_control:
+    - "git"
+    - "gh (GitHub CLI)"
+
+  containers:
+    note: "Check if Docker/Podman installed - not verified yet"
+
+## System Constraints
+constraints:
+  gnu_tools: "NOT installed - macOS uses BSD variants"
+  find_syntax: "Use /usr/bin/find for BSD or fd for modern search"
+  grep_syntax: "Use rg (ripgrep), not GNU grep patterns"
+  shell_aliases: "Check 'alias' output - find/grep may be aliased"
+
+## Common Queries (Agent FAQ)
+
+### Q: How do I schedule a daily task?
+A: Use launchd with StartCalendarInterval in ~/Library/LaunchAgents/
+   See: ~/Library/LaunchAgents/com.devvyn.voicememos.offload.plist for example
+
+### Q: Can I use cron?
+A: Yes (at /usr/sbin/cron), but launchd is preferred on macOS
+
+### Q: Where should long output go?
+A: Desktop with ISO timestamp if >24 lines (see user_preferences.output_format)
+
+### Q: Should I create a README?
+A: NO - never create documentation unless explicitly requested
+
+### Q: What Python version?
+A: 3.11+ standard, managed with 'uv'
+
+### Q: Where are coding projects?
+A: ~/Documents/GitHub/ (see paths.projects for specific ones)
+
+### Q: How do I send a bridge message?
+A: ~/devvyn-meta-project/scripts/bridge-send.sh sender recipient priority "title" file.md
+
+### Q: Is Docker available?
+A: Unknown - need to check 'which docker' (add to this file when verified)
+
+---
+
+## Maintenance
+
+**Update this file when:**
+- System software updated (macOS version, tools installed)
+- New agent types added to infrastructure
+- Project locations change
+- User preferences evolve
+- New capabilities discovered
+
+**Agents should:**
+1. Read this file at session start for environment facts
+2. Query this file instead of pondering system capabilities
+3. Propose updates when discovering new facts
+4. Prioritize facts here over assumptions
+
+**Current gaps to fill:**
+- [ ] Docker/container availability
+- [ ] Database systems installed
+- [ ] AWS CLI configuration
+- [ ] IDE/editor full list
+- [ ] Backup systems in use

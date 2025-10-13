@@ -12,6 +12,7 @@ if [[ $# -lt 1 ]]; then
   echo "Searches across:"
   echo "  - Knowledge base decisions"
   echo "  - Knowledge base patterns"
+  echo "  - Knowledge base references"
   echo "  - Project CLAUDE.md files"
   echo ""
   echo "Examples:"
@@ -48,6 +49,18 @@ if [[ -d "$KB_BASE/patterns" ]]; then
   echo "🔧 Patterns:"
   echo "------------"
   if grep -r $case_flag "$query" "$KB_BASE/patterns/" 2>/dev/null | sed 's/^/  /'; then
+    :
+  else
+    echo "  (no matches)"
+  fi
+  echo ""
+fi
+
+# Search references
+if [[ -d "$KB_BASE/references" ]]; then
+  echo "📚 References:"
+  echo "--------------"
+  if grep -r $case_flag "$query" "$KB_BASE/references/" 2>/dev/null | sed 's/^/  /'; then
     :
   else
     echo "  (no matches)"

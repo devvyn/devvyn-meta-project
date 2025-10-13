@@ -33,6 +33,17 @@ derive_state() {
     done | sed '$ s/,$//'
     echo "  ],"
 
+    # Recent stories (last 10) - Harari's Nexus: patterns + narrative + propagation
+    echo "  \"recent_stories\": ["
+    find "$EVENTS_DIR" -name "*-story-*.md" -type f 2>/dev/null | sort -r | head -10 | while read event; do
+        local title=$(grep "^# story:" "$event" | head -1 | sed 's/^# story: //')
+        local timestamp=$(grep "^\*\*Timestamp\*\*:" "$event" | cut -d: -f2- | tr -d ' ')
+        local belief_state=$(grep "^\*\*Belief State\*\*:" "$event" | cut -d: -f2- | sed 's/^ //')
+        local verification=$(grep "^\*\*Verification\*\*:" "$event" | cut -d: -f2- | sed 's/^ //')
+        echo "    {\"title\": \"$title\", \"timestamp\": \"$timestamp\", \"belief_state\": \"$belief_state\", \"verification\": \"$verification\"},"
+    done | sed '$ s/,$//'
+    echo "  ],"
+
     # Agent activity (last 24h)
     echo "  \"recent_agent_activity\": ["
     find "$EVENTS_DIR" -name "*-agent-registration-*.md" -type f -mtime -1 2>/dev/null | sort -r | while read event; do

@@ -59,21 +59,22 @@ release_lock() {
 
 get_next_message() {
     local agent="$1"
-    local queue_dir="$BRIDGE_ROOT/queue/pending"
+    local inbox_dir="$BRIDGE_ROOT/inbox/$agent"
 
-    if [ ! -d "$queue_dir" ]; then
+    if [ ! -d "$inbox_dir" ]; then
         echo "No pending messages" >&2
         return 1
     fi
 
-    # Find messages addressed to this agent (FIFO order)
-    for message_file in $(ls "$queue_dir"/*.md 2>/dev/null | sort); do
+    # Find oldest message in inbox (FIFO order)
+    for message_file in $(ls "$inbox_dir"/*.md 2>/dev/null | sort); do
         if [ -f "$message_file" ]; then
-            local recipient=$(grep "^\\*\\*To\\*\\*:" "$message_file" | cut -d: -f2 | xargs)
-            if [ "$recipient" = "$agent" ]; then
-                echo "$message_file"
-                return 0
+            # Skip example files
+            if [[ "$(basename "$message_file")" == "_example_"* ]]; then
+                continue
             fi
+            echo "$message_file"
+            return 0
         fi
     done
 
@@ -83,8 +84,19 @@ get_next_message() {
 
 find_message_by_id() {
     local message_id="$1"
-    local queue_dir="$BRIDGE_ROOT/queue/pending"
+    local agent="$2"
+    local inbox_dir="$BRIDGE_ROOT/inbox/$agent"
 
+    # Search in agent's inbox first
+    for message_file in $(ls "$inbox_dir"/*.md 2>/dev/null); do
+        if [[ "$(basename "$message_file")" == *"$message_id"* ]]; then
+            echo "$message_file"
+            return 0
+        fi
+    done
+
+    # Fallback to queue/pending if not in inbox
+    local queue_dir="$BRIDGE_ROOT/queue/pending"
     for message_file in $(ls "$queue_dir"/*.md 2>/dev/null); do
         if [[ "$(basename "$message_file")" == *"$message_id"* ]]; then
             echo "$message_file"
@@ -92,7 +104,7 @@ find_message_by_id() {
         fi
     done
 
-    echo "Message ID '$message_id' not found in pending queue" >&2
+    echo "Message ID '$message_id' not found" >&2
     return 1
 }
 
@@ -104,17 +116,17 @@ process_message() {
     local lock_file
     lock_file=$(acquire_lock "$message_file") || return 1
 
-    # Validate message is for this agent
-    local recipient=$(grep "^\\*\\*To\\*\\*:" "$message_file" | cut -d: -f2 | xargs)
+    # Validate message is for this agent (only check first 20 lines for header)
+    local recipient=$(head -20 "$message_file" | grep "^\\*\\*To\\*\\*:" | head -1 | cut -d: -f2 | xargs)
     if [ "$recipient" != "$agent" ]; then
         echo "Error: Message is addressed to '$recipient', not '$agent'" >&2
         release_lock "$lock_file"
         return 1
     fi
 
-    local message_id=$(grep "^\\*\\*Message-ID\\*\\*:" "$message_file" | cut -d: -f2 | xargs)
-    local sender=$(grep "^\\*\\*From\\*\\*:" "$message_file" | cut -d: -f2 | xargs)
-    local priority=$(grep "^# \\[PRIORITY:" "$message_file" | sed 's/.*PRIORITY: *\\([^\\]]*\\).*/\\1/')
+    local message_id=$(head -20 "$message_file" | grep "^\\*\\*Message-ID\\*\\*:" | head -1 | cut -d: -f2 | xargs)
+    local sender=$(head -20 "$message_file" | grep "^\\*\\*From\\*\\*:" | head -1 | cut -d: -f2 | xargs)
+    local priority=$(grep "^# \\[PRIORITY:" "$message_file" | head -1 | sed 's/.*PRIORITY: *\\([^\\]]*\\).*/\\1/')
 
     echo "📨 Processing message: $message_id"
     echo "👤 From: $sender"
@@ -137,7 +149,9 @@ process_message() {
     echo ""
 
     # Archive processed message
-    local archive_file="$BRIDGE_ROOT/archive/processed-$(basename "$message_file")"
+    local archive_dir="$BRIDGE_ROOT/archive/$agent"
+    mkdir -p "$archive_dir"
+    local archive_file="$archive_dir/$(basename "$message_file")"
     mv "$processing_file" "$archive_file"
 
     # Update processing statistics
@@ -167,7 +181,7 @@ validate_agent "$AGENT" || exit 1
 
 # Find message to process
 if [ -n "$MESSAGE_ID" ]; then
-    MESSAGE_FILE=$(find_message_by_id "$MESSAGE_ID") || exit 1
+    MESSAGE_FILE=$(find_message_by_id "$MESSAGE_ID" "$AGENT") || exit 1
 else
     MESSAGE_FILE=$(get_next_message "$AGENT") || exit 1
 fi

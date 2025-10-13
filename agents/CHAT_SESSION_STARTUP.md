@@ -1,62 +1,42 @@
-# Chat Session Startup Guide
+# CHAT Session Startup
 
-**For: Devvyn & Claude Chat Agent**
-**Version**: 1.0
+## ORIENTATION
 
-## Human Startup Protocol (First Message)
+Context: Rapid session initialization protocol for Chat agent
+Authority: Autonomous startup checks when human triggers
+Escalate: None (startup protocol is informational)
 
-When starting a new Chat session, simply say:
+## HUMAN TRIGGER
 
-> "Check project status"
+Say: "Check project status" OR "Session start"
 
-or
+## STARTUP PROTOCOL (3 minutes total)
 
-> "Session start"
+```bash
+# 1. Bridge messages (30s)
+ls ~/devvyn-meta-project/bridge/outbox/chat/
+# Process CRITICAL/HIGH immediately
 
-This triggers the agent to run the startup protocol below.
+# 2. Active projects (60s)
+cat ~/devvyn-meta-project/projects/active-projects.md
+# Flag: YELLOW/RED health status
 
-## Chat Agent Startup Protocol
+# 3. Review requests (30s)
+# Check CLAUDE.md in Tier 1/2 projects:
+# - aafc-herbarium-dwc-extraction-2025
+# - s3-image-dataset-kit
+# - python-toolbox-devvyn
+# - claude-code-hooks
+# Note: [ ] incomplete requests
 
-When the human requests a session start, automatically execute:
+# 4. Strategic context (30s)
+cat ~/devvyn-meta-project/key-answers.md
+# Note: pending questions/decisions
 
-### 1. Check Bridge Messages (30 seconds)
-
-```
-List: /Users/devvynmurphy/devvyn-meta-project/bridge/outbox/chat/
-```
-
-**Action**: Process CRITICAL and HIGH priority messages immediately.
-
-### 2. Scan Active Projects (60 seconds)
-
-```
-Read: /Users/devvynmurphy/devvyn-meta-project/projects/active-projects.md
-```
-
-**Look for**: Projects marked YELLOW or RED health status.
-
-### 3. Check Review Requests (30 seconds)
-
-Active Tier 1/2 projects with CLAUDE.md files:
-
-- `aafc-herbarium-dwc-extraction-2025`
-- `s3-image-dataset-kit`
-- `python-toolbox-devvyn`
-- `claude-code-hooks`
-
-**Action**: Note any `[ ]` incomplete review requests.
-
-### 4. Read Strategic Context (30 seconds)
-
-```
-Read: /Users/devvynmurphy/devvyn-meta-project/key-answers.md
+# 5. Report status (30s)
 ```
 
-**Note**: Any questions or decisions pending human input.
-
-### 5. Report Status (30 seconds)
-
-Summarize findings:
+## REPORT FORMAT
 
 ```
 🔔 Bridge: [X messages - Y high priority]
@@ -65,58 +45,38 @@ Summarize findings:
 🎯 Context: [Key strategic items]
 ```
 
-**Total time**: ~3 minutes
+## SKIP PROTOCOL IF
 
-## When NOT to Run Startup Protocol
+- Specific standalone question asked
+- Continuing previous session conversation
+- Human says "skip startup checks"
 
-Skip the protocol if:
-
-- Human asks a specific standalone question
-- Continuing a previous conversation in same session
-- Human explicitly says "skip startup checks"
-
-## Manual Checks (As Needed)
-
-If more than a few days since last session:
+## EXTENDED ABSENCE (>1 week)
 
 ```bash
-# Check for new projects
+# Check new projects
 ls /Users/devvynmurphy/Documents/GitHub/ | grep -v node_modules
 
-# Check framework version
-head -5 /Users/devvynmurphy/devvyn-meta-project/README.md
+# Framework version
+head -5 ~/devvyn-meta-project/README.md
 ```
 
-## Integration with Custom Instructions
+## QUICK COMMANDS
 
-**Do NOT paste this into Custom Instructions.**
+| Command | Action |
+|---------|--------|
+| "Session start" | Full protocol |
+| "Check bridge" | Bridge only |
+| "Project status" | Active projects only |
+| "Review requests" | CLAUDE.md scan |
+| "Skip checks" | Jump to conversation |
 
-This guide lives in the filesystem. Reference it naturally when:
+## FAILURE RECOVERY
 
-- Starting strategic planning sessions
-- The human says "check project status"
-- After extended time between sessions (>1 week)
+```tla
+INVARIANT StartupResilience ≜
+  FileMissing ∨ FileInaccessible
+  ⇒ (ReportUnavailable ∧ ContinueWithAvailable ∧ ¬BlockConversation)
+```
 
-## Quick Commands for Human
-
-| Command | What It Does |
-|---------|-------------|
-| "Session start" | Full startup protocol |
-| "Check bridge" | Bridge messages only |
-| "Project status" | Active projects health |
-| "Review requests" | Scan CLAUDE.md files |
-| "Skip checks" | Jump directly to conversation |
-
-## Failure Recovery
-
-If files are missing or inaccessible:
-
-1. **Report what you can't access**
-2. **Continue with available information**
-3. **Don't block the conversation**
-
-The startup protocol should enhance sessions, not gate them.
-
----
-
-**Next Steps**: Try saying "session start" in your next chat to test the protocol.
+Protocol enhances sessions, doesn't gate them.

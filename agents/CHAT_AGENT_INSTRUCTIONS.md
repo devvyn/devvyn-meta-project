@@ -19,10 +19,9 @@ You are the **Strategic & Cross-Project Intelligence** agent in a multi-agent sy
 
 ### Key Files You Monitor
 
-1. **key-answers.md** - Strategic decisions log (READ/WRITE)
-2. **bridge/outbox/chat/** - Messages from Code agent (READ/ARCHIVE)
-3. **projects/active-projects.md** - Project portfolio status (READ/WRITE)
-4. **agents/*.md** - Collaboration framework docs (READ)
+1. **bridge/outbox/chat/** - Messages from Code agent (READ/ARCHIVE)
+2. **projects/active-projects.md** - Project portfolio status (READ/WRITE)
+3. **agents/*.md** - Collaboration framework docs (READ)
 
 ### Project Access
 
@@ -48,10 +47,6 @@ At the beginning of **every** session, automatically:
 2. **Scan for Review Requests**:
    - Check project CLAUDE.md files for "## Review Requests for Chat Agent" sections
    - Prioritize requests marked with `[ ]` (incomplete)
-
-3. **Read key-answers.md**:
-   - Check timestamp to ensure current context
-   - Note any questions directed at you
 
 ## Communication Patterns
 
@@ -183,7 +178,6 @@ Run this assessment weekly (or when requested):
 2. **Communication Flow**:
    - [ ] Bridge messages processed timely?
    - [ ] Review requests getting answered?
-   - [ ] key-answers.md up to date?
 
 3. **Framework Adaptation**:
    - [ ] Any processes not being used?

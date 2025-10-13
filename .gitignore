@@ -136,6 +136,9 @@ docs-html/
 .env.production
 secrets/
 private/
+.claude/settings.local.json
+bridge/registry/registry.json
+status/*-metrics.json
 
 # Idea Evolution System - Frequently Updated Ephemera
 # (Structural files are tracked, but dynamic content is ignored)
@@ -197,3 +200,34 @@ bridge/metrics/
 # Temporary demonstration files
 demonstrations/temp/
 demos/temp/
+
+# Content-DAG storage (local provenance tracking)
+.dag/
+dag/
+objects/
+
+# Session handoffs (ephemeral session-to-session context)
+.session-handoffs/
+
+# Bridge event sourcing (transient event logs)
+bridge/events/
+bridge/defer-queue/
+bridge/outbox/
+bridge/archive/
+
+# Compressed/generated documentation
+*.compact.md
+
+# Working notes and ideas
+ideas/
+proposals/
+
+# Backups
+backups/
+
+# Malformed/temporary files
+*.INCORRECT-TIMESTAMP
+*-check-the-bridge.txt
+
+# Temporary scripts
+send-chat-responses.sh

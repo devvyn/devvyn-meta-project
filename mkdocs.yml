@@ -209,6 +209,11 @@ nav:
     - Docker: templates/docker.md
     - Kubernetes: templates/kubernetes.md
 
+  - Tools:
+    - Overview: tools/index.md
+    - Configuration Generator: tools/coord-init.md
+    - Migration Assistant: tools/coord-migrate.md
+
   - Roadmap:
     - Capability Gaps: roadmap/capability-gaps.md
     - Performance Optimization: roadmap/performance-optimization.md

@@ -1,0 +1,239 @@
+# MkDocs Configuration for Coordination System Documentation
+# Version: 1.0
+# Last Updated: 2025-10-30
+
+site_name: Coordination System
+site_description: Multi-agent coordination system with formal verification and universal patterns
+site_author: Devvyn Murphy
+site_url: https://coordination.local
+
+# Repository
+repo_name: devvyn-meta-project
+repo_url: https://github.com/devvyn/coordination-system  # Update when public
+edit_uri: edit/main/docs/
+
+# Copyright
+copyright: Copyright &copy; 2025 Devvyn Murphy
+
+# Theme Configuration
+theme:
+  name: material
+  language: en
+
+  # Color Palette
+  palette:
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+  # Font
+  font:
+    text: Roboto
+    code: Roboto Mono
+
+  # Logo and Favicon
+  # logo: assets/logo.png
+  # favicon: assets/favicon.png
+
+  # Features
+  features:
+    # Navigation
+    - navigation.instant      # Instant loading (SPA-like)
+    - navigation.tracking     # URL updates on scroll
+    - navigation.tabs         # Top-level tabs
+    - navigation.tabs.sticky  # Sticky tabs
+    - navigation.sections     # Section headers in sidebar
+    - navigation.expand       # Expand sections by default
+    - navigation.indexes      # Section index pages
+    - navigation.top          # Back to top button
+
+    # Search
+    - search.suggest          # Search suggestions
+    - search.highlight        # Highlight search terms
+    - search.share            # Share search results
+
+    # Table of Contents
+    - toc.follow              # TOC follows scroll
+    - toc.integrate           # TOC in navigation
+
+    # Content
+    - content.code.copy       # Copy code button
+    - content.code.annotate   # Code annotations
+    - content.tabs.link       # Linked content tabs
+
+# Plugins
+plugins:
+  - search:
+      lang: en
+      separator: '[\s\-\.]+'
+
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: timeago
+
+  - minify:
+      minify_html: true
+      minify_js: true
+      minify_css: true
+      htmlmin_opts:
+        remove_comments: true
+      cache_safe: true
+
+# Extensions
+markdown_extensions:
+  # Python Markdown
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+
+  # Python Markdown Extensions
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+# Extra CSS and JavaScript
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/extra.js
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+# Extra Configuration
+extra:
+  # Version Selector
+  version:
+    provider: mike
+    default: latest
+
+  # Social Links
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/devvyn
+      name: GitHub
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/devvyn
+      name: Twitter
+
+  # Analytics (optional)
+  # analytics:
+  #   provider: google
+  #   property: G-XXXXXXXXXX
+
+  # Consent (GDPR)
+  # consent:
+  #   title: Cookie consent
+  #   description: >-
+  #     We use cookies to recognize your repeated visits and preferences, as well
+  #     as to measure the effectiveness of our documentation and whether users
+  #     find what they're searching for. With your consent, you're helping us to
+  #     make our documentation better.
+
+# Navigation Structure
+nav:
+  - Home: index.md
+
+  - Getting Started:
+    - Quick Start: getting-started/quickstart.md
+    - Installation: getting-started/installation.md
+    - Your First Coordination System: getting-started/first-system.md
+    - FAQ: getting-started/faq.md
+
+  - Concepts:
+    - Universal Patterns: abstractions/universal-patterns.md
+    - Event Sourcing: concepts/event-sourcing.md
+    - Authority Domains: concepts/authority-domains.md
+    - Collision-Free Messaging: concepts/collision-free-messaging.md
+    - Content-Addressed DAG: concepts/content-dag.md
+
+  - Guides:
+    - Configuration: configuration/customization-guide.md
+    - Domain Transfer: branching/domain-transfer-cookbook.md
+    - Scale Transition: scaling/scale-transition-guide.md
+    - Platform Porting: platform/platform-porting-guide.md
+    - Troubleshooting: guides/troubleshooting.md
+
+  - Templates:
+    - Overview: templates/index.md
+    - Minimal Coordination: templates/minimal.md
+    - Research: templates/research.md
+    - Software Development: templates/software.md
+    - Content Creation: templates/content.md
+    - Docker: templates/docker.md
+    - Kubernetes: templates/kubernetes.md
+
+  - Roadmap:
+    - Capability Gaps: roadmap/capability-gaps.md
+    - Performance Optimization: roadmap/performance-optimization.md
+    - Security & Privacy: roadmap/security-privacy-audit.md
+
+  - Reference:
+    - CLI Commands: reference/cli.md
+    - API Reference: reference/api.md
+    - Configuration Options: reference/configuration.md
+    - Message Format: reference/message-format.md
+
+  - Advanced:
+    - TLA+ Verification: advanced/tla-verification.md
+    - Multi-Tenancy: advanced/multi-tenancy.md
+    - High Availability: advanced/high-availability.md
+    - Disaster Recovery: advanced/disaster-recovery.md
+
+  - Community:
+    - Contributing: community/contributing.md
+    - Code of Conduct: community/code-of-conduct.md
+    - Changelog: community/changelog.md
+    - License: community/license.md
+
+# Strict Mode (helpful for catching errors)
+strict: true
+
+# Development Server
+dev_addr: 127.0.0.1:8000

@@ -7,8 +7,7 @@ Converts markdown documentation to spoken audio using TTS APIs.
 Supported APIs:
 - 11 Labs (recommended for quality)
 - OpenAI TTS (good alternative)
-- Google Cloud TTS (enterprise)
-- AWS Polly (enterprise)
+- macOS 'say' (free, offline, built-in)
 
 Usage:
     ./doc-to-audio.py --input docs/tools/coord-init.md --output audio/
@@ -26,13 +25,13 @@ import argparse
 import json
 import os
 import re
+import subprocess
 import sys
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional, Union
 
 try:
     from rich.console import Console
-    from rich.progress import Progress, SpinnerColumn, TextColumn
 
     HAS_RICH = True
 except ImportError:
@@ -125,15 +124,15 @@ class MarkdownCleaner:
         """Handle markdown tables - describe or remove"""
 
         # Detect tables (look for | separators)
-        def replace_table(match):
+        def replace_table(match: Any) -> str:
             lines = match.group(0).strip().split("\n")
             # Count rows (minus separator line)
-            rows = len([line for line in lines if not re.match(r"^\|[\s\-:]+\|$", line)])
+            rows = len(
+                [line for line in lines if not re.match(r"^\|[\s\-:]+\|$", line)]
+            )
             return f"[Table with {rows} rows]"
 
-        text = re.sub(
-            r"(\|.+\|\n)+", replace_table, text, flags=re.MULTILINE
-        )
+        text = re.sub(r"(\|.+\|\n)+", replace_table, text, flags=re.MULTILINE)
 
         return text
 
@@ -218,7 +217,10 @@ class ChunkManager:
                 sentence = sentences[i]
                 delimiter = sentences[i + 1] if i + 1 < len(sentences) else ""
 
-                if len(current_chunk) + len(sentence) + len(delimiter) <= self.max_chunk_size:
+                if (
+                    len(current_chunk) + len(sentence) + len(delimiter)
+                    <= self.max_chunk_size
+                ):
                     current_chunk += sentence + delimiter
                 else:
                     if current_chunk:
@@ -242,12 +244,14 @@ class ElevenLabsTTS:
 
     def __init__(self, api_key: str, voice: str = "Adam"):
         if not HAS_ELEVENLABS:
-            raise ImportError("elevenlabs package not installed: pip install elevenlabs")
+            raise ImportError(
+                "elevenlabs package not installed: pip install elevenlabs"
+            )
 
         set_api_key(api_key)
         self.voice = voice
 
-    def generate(self, text: str, output_path: str):
+    def generate(self, text: str, output_path: str) -> None:
         """Generate audio from text"""
 
         audio = generate(
@@ -277,7 +281,7 @@ class OpenAITTS:
         self.voice = voice
         self.model = model
 
-    def generate(self, text: str, output_path: str):
+    def generate(self, text: str, output_path: str) -> None:
         """Generate audio from text"""
 
         response = self.client.audio.speech.create(
@@ -287,8 +291,54 @@ class OpenAITTS:
         response.stream_to_file(output_path)
 
 
+class MacOSTTS:
+    """macOS native TTS provider using 'say' command"""
+
+    def __init__(self, voice: str = "Daniel"):
+        self.voice = voice
+
+    def generate(self, text: str, output_path: str) -> None:
+        """Generate audio from text using macOS say command"""
+        # Generate AIFF file first (say command output format)
+        aiff_path = str(Path(output_path).with_suffix(".aiff"))
+
+        try:
+            # Use say command to generate audio
+            subprocess.run(
+                ["say", "-v", self.voice, "-o", aiff_path, text],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+
+            # Convert AIFF to MP3 using ffmpeg
+            subprocess.run(
+                [
+                    "ffmpeg",
+                    "-i",
+                    aiff_path,
+                    "-acodec",
+                    "libmp3lame",
+                    "-b:a",
+                    "192k",
+                    output_path,
+                    "-y",  # Overwrite output file
+                ],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+
+        finally:
+            # Clean up temporary AIFF file
+            if Path(aiff_path).exists():
+                Path(aiff_path).unlink()
+
+
 class DocToAudioConverter:
     """Main converter orchestrator"""
+
+    tts: Union["ElevenLabsTTS", "OpenAITTS", "MacOSTTS"]
 
     def __init__(
         self,
@@ -304,15 +354,19 @@ class DocToAudioConverter:
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
         # Initialize TTS provider
-        if api_key is None:
-            api_key = self._get_api_key(provider)
-
-        if provider == "elevenlabs":
-            self.tts = ElevenLabsTTS(api_key=api_key, voice=voice or "Adam")
-        elif provider == "openai":
-            self.tts = OpenAITTS(api_key=api_key, voice=voice or "alloy")
+        if provider == "macos":
+            # macOS doesn't need an API key
+            self.tts = MacOSTTS(voice=voice or "Daniel")
         else:
-            raise ValueError(f"Unsupported provider: {provider}")
+            if api_key is None:
+                api_key = self._get_api_key(provider)
+
+            if provider == "elevenlabs":
+                self.tts = ElevenLabsTTS(api_key=api_key, voice=voice or "Adam")
+            elif provider == "openai":
+                self.tts = OpenAITTS(api_key=api_key, voice=voice or "alloy")
+            else:
+                raise ValueError(f"Unsupported provider: {provider}")
 
     def _get_api_key(self, provider: str) -> str:
         """Get API key from environment"""
@@ -328,26 +382,24 @@ class DocToAudioConverter:
 
         api_key = os.environ.get(env_var)
         if not api_key:
-            raise ValueError(
-                f"API key not found. Set {env_var} environment variable."
-            )
+            raise ValueError(f"API key not found. Set {env_var} environment variable.")
 
         return api_key
 
-    def convert_file(self, input_path: str, output_name: Optional[str] = None):
+    def convert_file(self, input_path: str, output_name: Optional[str] = None) -> list[Path]:
         """Convert single markdown file to audio"""
 
-        input_path = Path(input_path)
-        if not input_path.exists():
+        input_path_obj = Path(input_path)
+        if not input_path_obj.exists():
             raise FileNotFoundError(f"Input file not found: {input_path}")
 
         if output_name is None:
-            output_name = input_path.stem
+            output_name = input_path_obj.stem
 
-        self.print_info(f"\n📄 Processing: {input_path.name}")
+        self.print_info(f"\n📄 Processing: {input_path_obj.name}")
 
         # Read markdown
-        with open(input_path) as f:
+        with open(input_path_obj) as f:
             markdown = f.read()
 
         # Clean for TTS
@@ -359,7 +411,7 @@ class DocToAudioConverter:
         self.print_info(f"   Chunks: {len(chunks)}")
 
         # Generate audio for each chunk
-        audio_files = []
+        audio_files: list[Path] = []
         for i, chunk in enumerate(chunks):
             chunk_name = f"{output_name}_part{i+1:03d}.mp3"
             chunk_path = self.output_dir / chunk_name
@@ -375,38 +427,38 @@ class DocToAudioConverter:
 
         # Generate metadata
         metadata_path = self.output_dir / f"{output_name}_metadata.json"
-        self._write_metadata(metadata_path, input_path, audio_files)
+        self._write_metadata(metadata_path, input_path_obj, audio_files)
 
         self.print_success(f"✅ Complete: {output_name} ({len(audio_files)} parts)")
 
         return audio_files
 
-    def convert_directory(self, input_dir: str, recursive: bool = False):
+    def convert_directory(self, input_dir: str, recursive: bool = False) -> None:
         """Convert all markdown files in directory"""
 
-        input_dir = Path(input_dir)
-        if not input_dir.is_dir():
+        input_dir_obj = Path(input_dir)
+        if not input_dir_obj.is_dir():
             raise NotADirectoryError(f"Not a directory: {input_dir}")
 
         pattern = "**/*.md" if recursive else "*.md"
-        md_files = list(input_dir.glob(pattern))
+        md_files = list(input_dir_obj.glob(pattern))
 
         self.print_info(f"\n📁 Found {len(md_files)} markdown files")
 
         for md_file in md_files:
             try:
                 # Generate output name from relative path
-                rel_path = md_file.relative_to(input_dir)
+                rel_path = md_file.relative_to(input_dir_obj)
                 output_name = str(rel_path.with_suffix("")).replace("/", "_")
 
-                self.convert_file(md_file, output_name)
+                self.convert_file(str(md_file), output_name)
             except Exception as e:
                 self.print_error(f"Error processing {md_file}: {e}")
                 continue
 
     def _write_metadata(
         self, metadata_path: Path, input_path: Path, audio_files: list[Path]
-    ):
+    ) -> None:
         """Write metadata file"""
 
         metadata = {
@@ -419,29 +471,29 @@ class DocToAudioConverter:
         with open(metadata_path, "w") as f:
             json.dump(metadata, f, indent=2)
 
-    def print_info(self, text: str):
+    def print_info(self, text: str) -> None:
         """Print info message"""
         if HAS_RICH:
-            self.console.print(f"[cyan]{text}[/cyan]")
+            self.console.print(f"[cyan]{text}[/cyan]")  # type: ignore[union-attr]
         else:
             print(text)
 
-    def print_success(self, text: str):
+    def print_success(self, text: str) -> None:
         """Print success message"""
         if HAS_RICH:
-            self.console.print(f"[green]{text}[/green]")
+            self.console.print(f"[green]{text}[/green]")  # type: ignore[union-attr]
         else:
             print(text)
 
-    def print_error(self, text: str):
+    def print_error(self, text: str) -> None:
         """Print error message"""
         if HAS_RICH:
-            self.console.print(f"[red]{text}[/red]")
+            self.console.print(f"[red]{text}[/red]")  # type: ignore[union-attr]
         else:
             print(f"ERROR: {text}")
 
 
-def main():
+def main() -> None:
     """Main entry point"""
 
     parser = argparse.ArgumentParser(
@@ -465,18 +517,18 @@ def main():
     parser.add_argument(
         "--provider",
         default="elevenlabs",
-        choices=["elevenlabs", "openai"],
+        choices=["elevenlabs", "openai", "macos"],
         help="TTS provider (default: elevenlabs)",
     )
 
     parser.add_argument(
         "--api-key",
-        help="API key (or set ELEVEN_LABS_API_KEY / OPENAI_API_KEY env var)",
+        help="API key (or set ELEVEN_LABS_API_KEY / OPENAI_API_KEY env var). Not needed for macOS provider.",
     )
 
     parser.add_argument(
         "--voice",
-        help="Voice to use (e.g., 'Adam' for 11 Labs, 'alloy' for OpenAI)",
+        help="Voice to use (e.g., 'Adam' for 11 Labs, 'alloy' for OpenAI, 'Daniel' for macOS)",
     )
 
     args = parser.parse_args()

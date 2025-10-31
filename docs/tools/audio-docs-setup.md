@@ -3,6 +3,7 @@
 **Convert documentation to high-quality spoken audio**
 
 Perfect for:
+
 - 🎧 Passive listening while working
 - 💤 Falling asleep to interesting technical content
 - 🚗 Commuting / driving
@@ -45,6 +46,16 @@ echo 'export ELEVEN_LABS_API_KEY="your_key"' >> ~/.zshrc
 export OPENAI_API_KEY="your_api_key_here"
 ```
 
+#### macOS Native TTS (FREE - No API Key Needed!)
+
+```bash
+# Install ffmpeg only
+brew install ffmpeg
+
+# No API key needed - works offline!
+# Ready to use immediately
+```
+
 ### 3. Convert Documentation
 
 ```bash
@@ -76,6 +87,7 @@ cd ~/devvyn-meta-project
 ```
 
 **Output**:
+
 ```
 audio/tools/
 ├── coord-init_part001.mp3
@@ -110,6 +122,27 @@ audio/tools/
   --voice nova  # OpenAI voice
 ```
 
+### Example 4: Free Offline Conversion (macOS)
+
+```bash
+# No API key needed - completely free!
+./scripts/doc-to-audio.py \
+  --input docs/tools/ \
+  --output audio/tools-macos/ \
+  --provider macos \
+  --voice Daniel  # British accent, natural
+
+# Works offline - perfect for testing or personal use
+# Requires only: ffmpeg (brew install ffmpeg)
+```
+
+**Benefits**:
+
+- ✅ Zero cost
+- ✅ Works without internet
+- ✅ Good quality for personal listening
+- ✅ Great for testing before using paid APIs
+
 ---
 
 ## Provider Comparison
@@ -117,12 +150,14 @@ audio/tools/
 ### 11 Labs (Recommended)
 
 **Pros**:
+
 - ✅ Most natural sounding
 - ✅ Multiple high-quality voices
 - ✅ Emotion and intonation control
 - ✅ 10,000 characters/month free tier
 
 **Cons**:
+
 - ⚠️ Costs after free tier ($5/10k chars)
 - ⚠️ Requires separate account
 
@@ -133,18 +168,43 @@ audio/tools/
 ### OpenAI TTS
 
 **Pros**:
+
 - ✅ Good quality
 - ✅ Same API key as ChatGPT
 - ✅ Fast generation
 - ✅ Competitive pricing
 
 **Cons**:
+
 - ⚠️ Less natural than 11 Labs
 - ⚠️ Fewer voice options
 
 **Best For**: Quick conversion, existing OpenAI users
 
 **Voices**: alloy, echo, fable, onyx, nova, shimmer
+
+### macOS Native TTS
+
+**Pros**:
+
+- ✅ Completely free
+- ✅ Works offline (no internet needed)
+- ✅ Built into macOS (no installation)
+- ✅ Requires ffmpeg only (convert AIFF → MP3)
+- ✅ Good quality, natural voices
+- ✅ Multiple languages and accents
+
+**Cons**:
+
+- ⚠️ macOS only (not portable)
+- ⚠️ Less natural than 11 Labs
+- ⚠️ Fewer customization options
+
+**Best For**: Personal use, testing, cost-free conversion, offline environments
+
+**English Voices**: Daniel (en_GB), Samantha (en_US), Reed, Rocko, Sandy, Shelley, Flo, Eddy, Grandma, Grandpa, Albert, Kathy, Ralph, and more
+
+**Requirements**: ffmpeg (`brew install ffmpeg`)
 
 ---
 
@@ -156,18 +216,22 @@ audio/tools/
 
 ```bash
 # Calm, soothing voices
---voice Bella  # 11 Labs - female, soft
---voice Callum # 11 Labs - male, calm
---voice nova   # OpenAI - neutral, smooth
+--voice Bella     # 11 Labs - female, soft
+--voice Callum    # 11 Labs - male, calm
+--voice nova      # OpenAI - neutral, smooth
+--voice Samantha  # macOS - female, natural (FREE)
+--voice Daniel    # macOS - male, British accent (FREE)
 ```
 
 #### For Active Listening
 
 ```bash
 # Clear, engaging voices
---voice Adam   # 11 Labs - male, clear
---voice Rachel # 11 Labs - female, articulate
---voice alloy  # OpenAI - neutral, crisp
+--voice Adam      # 11 Labs - male, clear
+--voice Rachel    # 11 Labs - female, articulate
+--voice alloy     # OpenAI - neutral, crisp
+--voice Reed      # macOS - clear, professional (FREE)
+--voice Shelley   # macOS - female, articulate (FREE)
 ```
 
 ### Chunk Size
@@ -208,6 +272,7 @@ text = re.sub(r'```([\w]*)\n.*?\n```', r'[\\1 code example]', text, flags=re.DOT
 - **Pro**: $99/month (500,000 chars)
 
 **Typical Document Sizes**:
+
 - `coord-init.md`: ~50,000 chars (after cleaning)
 - `coord-migrate.md`: ~60,000 chars
 - Full `docs/tools/`: ~120,000 chars
@@ -221,6 +286,16 @@ text = re.sub(r'```([\w]*)\n.*?\n```', r'[\\1 code example]', text, flags=re.DOT
 - **HD Model**: $30/1M characters
 
 **Estimate**: Full documentation site ≈ 250,000 chars ≈ $3.75 one-time
+
+### macOS Native TTS
+
+- **Pricing**: **FREE** ✅
+- **Requirements**: ffmpeg (one-time install)
+- **Limitations**: macOS only, offline processing
+
+**Estimate**: Full documentation site ≈ **$0** (completely free!)
+
+**Best Use Case**: Personal listening, testing, unlimited generation without cost concerns
 
 ---
 
@@ -337,22 +412,22 @@ VOICE = Adam
 all: tools summaries
 
 tools:
-	./scripts/doc-to-audio.py \
-		--input $(DOCS_DIR)/tools/ \
-		--output $(AUDIO_DIR)/tools/ \
-		--provider $(PROVIDER) \
-		--voice $(VOICE)
+ ./scripts/doc-to-audio.py \
+  --input $(DOCS_DIR)/tools/ \
+  --output $(AUDIO_DIR)/tools/ \
+  --provider $(PROVIDER) \
+  --voice $(VOICE)
 
 summaries:
-	./scripts/doc-to-audio.py \
-		--input /tmp/phase5-completion-summary.md \
-		--output $(AUDIO_DIR)/summaries/
-	./scripts/doc-to-audio.py \
-		--input /tmp/phase6-completion-summary.md \
-		--output $(AUDIO_DIR)/summaries/
+ ./scripts/doc-to-audio.py \
+  --input /tmp/phase5-completion-summary.md \
+  --output $(AUDIO_DIR)/summaries/
+ ./scripts/doc-to-audio.py \
+  --input /tmp/phase6-completion-summary.md \
+  --output $(AUDIO_DIR)/summaries/
 
 clean:
-	rm -rf $(AUDIO_DIR)/*
+ rm -rf $(AUDIO_DIR)/*
 ```
 
 ---
@@ -362,6 +437,7 @@ clean:
 ### Issue: "No module named 'elevenlabs'"
 
 **Solution**: Install package
+
 ```bash
 pip install elevenlabs
 ```
@@ -369,6 +445,7 @@ pip install elevenlabs
 ### Issue: "API key not found"
 
 **Solution**: Set environment variable
+
 ```bash
 export ELEVEN_LABS_API_KEY="your_key"
 
@@ -379,6 +456,7 @@ echo $ELEVEN_LABS_API_KEY
 ### Issue: "Rate limit exceeded"
 
 **Solution**: Wait or upgrade plan
+
 ```bash
 # 11 Labs: Wait for rate limit reset (usually 1 minute)
 # OR upgrade plan for higher limits
@@ -387,6 +465,7 @@ echo $ELEVEN_LABS_API_KEY
 ### Issue: Audio files too large
 
 **Solution**: Adjust quality or use compression
+
 ```bash
 # Compress with ffmpeg
 ffmpeg -i input.mp3 -b:a 128k output.mp3
@@ -395,6 +474,7 @@ ffmpeg -i input.mp3 -b:a 128k output.mp3
 ### Issue: Code blocks sound awkward
 
 **Solution**: Customize cleaning
+
 ```python
 # In doc-to-audio.py, adjust _handle_code_blocks():
 # Option: Remove entirely
@@ -472,6 +552,7 @@ text = re.sub(r'```.*?```', '', text, flags=re.DOTALL)
 ### Q: Can I speed up/slow down audio?
 
 **A**: Yes, in your audio player. Or use ffmpeg:
+
 ```bash
 ffmpeg -i input.mp3 -filter:a "atempo=1.25" output.mp3  # 1.25x speed
 ```
@@ -495,6 +576,7 @@ ffmpeg -i input.mp3 -filter:a "atempo=1.25" output.mp3  # 1.25x speed
 ### As YouTube Content
 
 1. **Create Static Video**:
+
    ```bash
    # Image + audio → video
    ffmpeg -loop 1 -i cover-image.png -i audio.mp3 \
@@ -530,15 +612,18 @@ gh release create v1.0-audio-docs \
 ---
 
 **Estimated Time**:
+
 - Setup: 15 minutes
 - First conversion: 5 minutes
 - Full documentation: 1-2 hours (mostly API time)
 
 **Cost**:
+
 - 11 Labs: ~$50 one-time for full docs
 - OpenAI: ~$4 one-time for full docs
 
 **Value**:
+
 - Accessible to wider audience
 - Passive learning format
 - Ambient listening content

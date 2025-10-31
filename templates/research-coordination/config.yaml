@@ -1,0 +1,338 @@
+# Research Coordination Configuration
+# Edit this file to customize for your research project
+
+research_project:
+  title: "Your Research Project Title"
+  pi: "Dr. Your Name"
+  institution: "Your Institution"
+  department: "Your Department"
+  start_date: "2025-01-01"
+  funding_source: "Grant XYZ"
+  irb_protocol: "IRB-2025-001"  # If applicable
+
+# Agent roles and their authority domains
+agents:
+  researcher:
+    authority_domains:
+      - experimental_design
+      - hypothesis_formation
+      - data_interpretation
+      - results_discussion
+    tools:
+      - jupyter_notebooks
+      - r_studio
+      - lab_equipment_interface
+      - manuscript_drafting
+    escalates_to: human
+    inbox: "inbox/researcher"
+
+  data:
+    authority_domains:
+      - data_cleaning
+      - data_validation
+      - statistical_analysis
+      - visualization
+      - provenance_tracking
+    tools:
+      - pandas
+      - numpy
+      - scipy
+      - matplotlib
+      - seaborn
+      - plotly
+    escalates_to: researcher
+    inbox: "inbox/data"
+
+  literature:
+    authority_domains:
+      - literature_search
+      - citation_management
+      - related_work_summary
+      - reference_formatting
+    tools:
+      - pubmed_api
+      - arxiv_api
+      - google_scholar_scraper
+      - crossref_api
+      - zotero
+      - mendeley
+    escalates_to: researcher
+    inbox: "inbox/literature"
+
+  publication:
+    authority_domains:
+      - manuscript_writing
+      - formatting
+      - submission_preparation
+      - response_to_reviewers
+    tools:
+      - latex
+      - pandoc
+      - reference_manager
+      - journal_templates
+      - grammarly_api
+    escalates_to: human
+    inbox: "inbox/publication"
+
+  human:
+    authority_domains:
+      - final_approval
+      - ethical_oversight
+      - funding_decisions
+      - strategic_direction
+      - submission_approval
+    inbox: "inbox/human"
+
+# Quality gates for research integrity
+quality_gates:
+  data_validation:
+    enabled: true
+    checks:
+      completeness:
+        threshold: 0.95  # At least 95% data points present
+        action_if_failed: "escalate"
+      outlier_rate:
+        threshold: 0.05  # At most 5% outliers
+        method: "IQR"
+        action_if_failed: "review"
+      distribution_check:
+        enabled: true
+        tests: ["shapiro_wilk", "kstest"]
+        p_value_threshold: 0.05
+      duplicate_detection:
+        enabled: true
+        action_if_found: "flag_for_review"
+      unit_consistency:
+        enabled: true
+        action_if_failed: "block"
+
+  statistical_analysis:
+    enabled: true
+    checks:
+      power_analysis:
+        minimum_power: 0.8
+        action_if_failed: "warn_low_power"
+      significance_threshold:
+        alpha: 0.05
+        adjustable: true
+      multiple_comparisons:
+        correction_method: "bonferroni"  # or "fdr", "holm"
+        enabled: true
+      effect_size_reporting:
+        required: true
+        methods: ["cohens_d", "odds_ratio", "r_squared"]
+      assumption_validation:
+        independence: true
+        normality: true
+        homoscedasticity: true
+        action_if_violated: "suggest_alternative_test"
+
+  reproducibility:
+    enabled: true
+    checks:
+      code_availability:
+        required: true
+        repository: "github"  # or "gitlab", "bitbucket"
+      data_availability:
+        required: true
+        repository: "zenodo"  # or "figshare", "osf", "dryad"
+        exceptions: ["human_subjects", "proprietary"]
+      methods_detail:
+        required: true
+        minimum_detail_level: "step_by_step"
+      software_versions:
+        required: true
+        include_dependencies: true
+      random_seeds:
+        required: true
+        documented: true
+      preregistration:
+        recommended: true
+        platform: "osf"  # or "clinicaltrials.gov", "aspredicted"
+
+  manuscript_quality:
+    enabled: true
+    checks:
+      citation_completeness:
+        required: true
+        action_if_missing: "block"
+      figure_quality:
+        minimum_dpi: 300
+        format: "pdf"  # or "png", "svg"
+      methods_reproducibility:
+        required: true
+        peer_review: true
+
+# Data provenance tracking
+provenance_tracking:
+  enabled: true
+  content_addressing: true  # SHA256 hashes
+  git_integration: true
+  lab_notebook_sync: true
+  timestamp_all_operations: true
+  track_transformations: true
+  cryptographic_verification: true
+
+  storage:
+    directory: "provenance/"
+    format: "json"
+    backup: true
+
+# Integration with external tools
+integrations:
+  jupyter:
+    enabled: true
+    auto_log_experiments: true
+    kernel: "python3"
+
+  r_studio:
+    enabled: false
+    auto_log_experiments: false
+
+  zotero:
+    enabled: true
+    api_key: "${ZOTERO_API_KEY}"  # Set in environment
+    library_id: "your_library_id"
+
+  github:
+    enabled: true
+    repository: "your-username/your-research-repo"
+    auto_commit_results: true
+    branch_per_experiment: true
+
+  zenodo:
+    enabled: true
+    api_token: "${ZENODO_TOKEN}"  # Set in environment
+    auto_deposit: false  # Manual approval required
+
+# Compliance and ethics
+compliance:
+  irb:
+    enabled: true
+    protocol_number: "IRB-2025-001"
+    approval_expiration: "2026-01-01"
+    gates:
+      - trigger: "before_data_collection"
+        check: "irb_approval_valid"
+        action_if_failed: "block_workflow"
+      - trigger: "before_publication"
+        check: "consent_forms_complete"
+        action_if_failed: "escalate_to_pi"
+
+  data_protection:
+    gdpr_compliant: false  # Set true if EU data
+    hipaa_compliant: false  # Set true if health data
+    anonymization:
+      enabled: true
+      method: "k_anonymity"
+      k_value: 5
+    retention_policy:
+      years: 7
+      secure_deletion_after: true
+    subject_rights:
+      deletion_on_request: true
+      data_portability: true
+
+  funding_compliance:
+    open_access_required: false
+    data_sharing_required: false
+    embargo_period_months: 0
+
+# Workflow automation
+automation:
+  background_tasks:
+    enabled: true
+    scheduler: "launchd"  # or "systemd", "cron", "windows_task_scheduler"
+    tasks:
+      - name: "check_inbox"
+        interval_minutes: 5
+        command: "./message.sh inbox researcher"
+      - name: "backup_data"
+        interval_hours: 24
+        command: "./scripts/backup.sh"
+      - name: "update_literature"
+        interval_days: 7
+        command: "./workflows/literature-update.sh"
+
+# Notification preferences
+notifications:
+  enabled: true
+  channels:
+    email:
+      enabled: false
+      address: "your.email@institution.edu"
+      events: ["quality_gate_failed", "human_review_required"]
+    slack:
+      enabled: false
+      webhook_url: "${SLACK_WEBHOOK_URL}"
+      events: ["experiment_complete", "paper_submitted"]
+    local:
+      enabled: true
+      method: "bridge"  # Use agent bridge messaging
+      events: ["all"]
+
+# Directory structure
+directories:
+  data:
+    raw: "data/raw/"
+    validated: "data/validated/"
+    processed: "data/processed/"
+    final: "data/final/"
+  results:
+    analysis: "results/analysis/"
+    figures: "results/figures/"
+    tables: "results/tables/"
+  manuscripts:
+    drafts: "manuscripts/drafts/"
+    submitted: "manuscripts/submitted/"
+    published: "manuscripts/published/"
+  literature:
+    papers: "literature/papers/"
+    summaries: "literature/summaries/"
+    bibliographies: "literature/bibliographies/"
+  protocols:
+    experimental: "protocols/experimental/"
+    computational: "protocols/computational/"
+  provenance:
+    data: "provenance/data/"
+    analysis: "provenance/analysis/"
+    code: "provenance/code/"
+
+# Backup strategy
+backup:
+  enabled: true
+  frequency: "daily"
+  destinations:
+    - type: "local"
+      path: "/Volumes/Backup/research-project/"
+    - type: "cloud"
+      service: "zenodo"  # or "osf", "figshare"
+      auto_upload: false
+  include:
+    - "data/"
+    - "results/"
+    - "manuscripts/"
+    - "provenance/"
+  exclude:
+    - "data/raw/*.tmp"
+    - "*.log"
+    - ".DS_Store"
+
+# Performance settings
+performance:
+  parallel_processing:
+    enabled: true
+    max_workers: 4
+  caching:
+    enabled: true
+    directory: ".cache/"
+    max_size_mb: 1000
+
+# Logging
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  file: "logs/research.log"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    keep_count: 10

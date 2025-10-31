@@ -1,0 +1,4 @@
+# Generated files - not part of the template
+inbox/
+events.log
+*.msg

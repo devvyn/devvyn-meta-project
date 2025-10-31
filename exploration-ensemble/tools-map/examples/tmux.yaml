@@ -1,0 +1,43 @@
+---
+tool: tmux
+category: cli
+interaction_methods:
+  keyboard: excellent
+  voice: good  # With custom voice commands
+  automation: excellent  # Highly scriptable
+capabilities:
+  - terminal-multiplexing
+  - session-persistence
+  - window-management
+  - pane-splitting
+  - remote-pairing
+  - session-sharing
+  - scriptable-layouts
+accessibility:
+  cognitive_load: medium  # Initial learning required
+  learning_curve: moderate  # 1-2 hours to basics, ongoing mastery
+  keyboard_only: yes
+  voice_compatible: partial  # Can integrate with Talon/voice systems
+integration:
+  - tmuxinator  # Session templates
+  - tmux-resurrect  # Session persistence across reboots
+  - tmux-continuum  # Automatic session saving
+  - fzf  # Fuzzy session switching
+  - vim  # Vi-style navigation
+related_use_cases:
+  - project-context-switching
+  - persistent-dev-environments
+  - remote-development
+  - pair-programming
+installation:
+  macos: brew install tmux
+  linux: apt install tmux / yum install tmux
+  windows: Via WSL
+configuration:
+  location: ~/.tmux.conf
+  complexity: low-to-high (simple config easy, advanced complex)
+documentation:
+  - https://github.com/tmux/tmux/wiki
+  - man tmux
+  - https://tmuxcheatsheet.com/
+---

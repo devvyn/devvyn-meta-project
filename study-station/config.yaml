@@ -1,0 +1,71 @@
+# Study Station Configuration
+# Terminal-based AI learning companion
+
+station:
+  name: "Conmigo Terminal"
+  version: "0.1.0"
+  motto: "Learning by exploration, not answers"
+
+paths:
+  sessions: "~/devvyn-meta-project/study-station/sessions"
+  topics: "~/devvyn-meta-project/study-station/topics"
+  progress: "~/devvyn-meta-project/study-station/progress"
+  templates: "~/devvyn-meta-project/study-station/templates"
+  artifacts: "~/devvyn-meta-project/study-station/artifacts"
+
+learning_modes:
+  explore:
+    description: "Open-ended exploration of a topic"
+    prompt_style: "socratic"
+    auto_save: true
+
+  practice:
+    description: "Structured practice with exercises"
+    prompt_style: "guided"
+    requires_exercises: true
+
+  review:
+    description: "Review and reinforce previous concepts"
+    prompt_style: "recap"
+    show_history: true
+
+  debug:
+    description: "Debug code with AI guidance"
+    prompt_style: "diagnostic"
+    requires_code: true
+
+  build:
+    description: "Build a project with guided steps"
+    prompt_style: "project"
+    milestone_tracking: true
+
+ai_behavior:
+  # Khanmigo-style Socratic teaching
+  never_give_direct_answers: true
+  ask_guiding_questions: true
+  encourage_discovery: true
+  provide_hints: true
+  celebrate_progress: true
+
+  # Hint levels (escalating support)
+  hint_levels:
+    1: "nudge"        # Subtle pointer in right direction
+    2: "clarify"      # Clarify the concept
+    3: "example"      # Show similar example
+    4: "walkthrough"  # Step-by-step guidance
+
+session:
+  auto_timestamp: true
+  auto_export: false
+  export_format: "markdown"
+  export_to_browser: false
+
+progress_tracking:
+  use_spaced_repetition: true
+  track_mastery_level: true
+  review_intervals: [1, 3, 7, 14, 30]  # days
+
+integration:
+  claude_code: true
+  knowledge_base: "~/devvyn-meta-project/knowledge-base"
+  output_routing: "~/devvyn-meta-project/scripts/markdown-to-browser.sh"

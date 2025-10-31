@@ -1,0 +1,17 @@
+# Temporal experiment artifacts
+logs/*.log
+results/*.json
+*.pyc
+__pycache__/
+.pytest_cache/
+
+# Docker volumes
+temporal-data/
+
+# IDE
+.vscode/
+.idea/
+
+# Environment
+.env
+.env.local

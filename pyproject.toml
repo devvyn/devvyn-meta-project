@@ -25,6 +25,7 @@ dependencies = [
     "pyrit>=0.9.0",
     "pytest>=8.4.2",
     "pytest-asyncio>=1.2.0",
+    "temporalio>=1.18.1",
 ]
 
 [project.optional-dependencies]

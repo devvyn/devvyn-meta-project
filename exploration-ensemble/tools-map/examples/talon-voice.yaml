@@ -1,0 +1,54 @@
+---
+tool: talon-voice
+category: voice-control
+interaction_methods:
+  keyboard: none  # Controls keyboard, doesn't use it
+  voice: excellent
+  automation: excellent  # Python scripting
+capabilities:
+  - voice-driven-computing
+  - hands-free-coding
+  - custom-voice-commands
+  - eye-tracking-integration
+  - dictation
+  - code-navigation
+  - app-control
+accessibility:
+  cognitive_load: high  # Learning command grammar
+  learning_curve: steep  # Weeks to fluency
+  keyboard_only: no  # Replaces keyboard
+  voice_compatible: yes  # Core purpose
+integration:
+  - cursorless  # Voice-driven code editing
+  - knausj_talon  # Community command set
+  - parrot  # Noise-based commands
+  - eye-tracking-devices
+related_use_cases:
+  - rsi-prevention
+  - hands-free-workflow
+  - alternative-input
+  - accessibility-computing
+installation:
+  macos: Download from talonvoice.com
+  linux: Available
+  windows: Available
+  cost: Free beta, paid releases
+configuration:
+  location: ~/.talon/
+  complexity: high  # Python scripting for customization
+  community: Very active, many shared configs
+documentation:
+  - https://talonvoice.com/docs/
+  - https://talon.wiki/
+  - https://github.com/knausj85/knausj_talon
+pros:
+  - Extremely powerful and customizable
+  - Active community
+  - Cross-platform
+  - Can control any application
+cons:
+  - Steep learning curve
+  - Requires quiet environment
+  - Voice fatigue with extended use
+  - Beta/paid model uncertainty
+---

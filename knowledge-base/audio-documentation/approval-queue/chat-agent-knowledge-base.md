@@ -1,0 +1,1 @@
+/Users/devvynmurphy/infrastructure/agent-bridge/workspace/docs/claude-project-setup/KNOWLEDGE-BASE.md

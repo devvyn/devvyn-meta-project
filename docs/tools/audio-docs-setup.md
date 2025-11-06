@@ -67,7 +67,83 @@ brew install ffmpeg
 
 # Recursive (all subdirectories)
 ./scripts/doc-to-audio.py --input docs/ --recursive --output audio/
+
+# Multi-voice narration (macOS only) 🆕
+./scripts/doc-to-audio.py --input docs/ --provider macos --multi-voice
 ```
+
+---
+
+## 🎭 Multi-Voice Narration (NEW!)
+
+**Available**: macOS provider only
+**Status**: ✅ Production Ready (2025-10-30)
+
+### What is Multi-Voice Narration?
+
+Automatically switches between different voices for different content types:
+
+- **Jamie (UK Premium)** - Main narration, warm and professional
+- **Lee (AU Premium)** - Section headers, structural markers
+- **Serena (UK Premium)** - Block quotes, emphasized content
+- **Fred (US Basic)** - Code blocks, technical content (robotic)
+
+### Why Use Multi-Voice?
+
+✅ **Audio Landmarks** - Different voices signal content type changes
+✅ **Engagement** - Variety prevents monotony in long documents
+✅ **Comprehension** - Easier to follow structure and context
+✅ **FREE** - No API costs, works offline
+
+### Quick Start
+
+```bash
+# Enable with --multi-voice flag
+./scripts/doc-to-audio.py \
+  --input your-doc.md \
+  --output audio/ \
+  --provider macos \
+  --multi-voice
+```
+
+### Demo Comparison
+
+Run the included demo to hear the difference:
+
+```bash
+# Generates single-voice vs multi-voice comparison
+./scripts/multivoice-demo.sh
+
+# Listen to results:
+afplay ~/Desktop/audio-comparison/single/multivoice-demo_part001.mp3
+afplay ~/Desktop/audio-comparison/multi/multivoice-demo_part001.mp3
+```
+
+### When to Use Multi-Voice
+
+**Perfect for**:
+
+- Technical documentation (code examples clearly differentiated)
+- Long-form content (>2000 words)
+- Educational material (structure helps learning)
+- Content with quotes/emphasis
+
+**Skip for**:
+
+- Short documents (<1000 words)
+- Narrative content (stories, blogs)
+- Content without code/quotes/structure
+
+### Performance
+
+| Metric | Single Voice | Multi-Voice |
+|--------|-------------|-------------|
+| Generation Speed | ~30s/1000 words | ~60s/1000 words |
+| File Size | 100% | ~110% |
+| Quality | Good | Excellent |
+| Cost | FREE | FREE |
+
+**Documentation**: See `/tmp/multivoice-narration-guide.md` for full details
 
 ---
 

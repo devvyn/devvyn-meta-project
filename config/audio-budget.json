@@ -1,0 +1,38 @@
+{
+  "active_provider": "elevenlabs_v3_alpha",
+  "budgets": {
+    "elevenlabs_starter": {
+      "monthly_limit": 30000,
+      "daily_limit": 2000,
+      "cost_per_month": 5.0,
+      "description": "ElevenLabs Starter Plan"
+    },
+    "elevenlabs_creator": {
+      "monthly_limit": 100000,
+      "daily_limit": 5000,
+      "cost_per_month": 11.0,
+      "description": "ElevenLabs Creator Plan"
+    },
+    "elevenlabs_v3_alpha": {
+      "monthly_limit": 150000,
+      "daily_limit": 10000,
+      "cost_per_month": 5.0,
+      "description": "ElevenLabs V3 Alpha (80% discount until June 2025)"
+    },
+    "openai_tts": {
+      "monthly_limit": 1000000,
+      "daily_limit": 50000,
+      "cost_per_month": 15.0,
+      "description": "OpenAI TTS API"
+    },
+    "macos_native": {
+      "monthly_limit": Infinity,
+      "daily_limit": Infinity,
+      "cost_per_month": 0.0,
+      "description": "macOS Native TTS (Free)"
+    }
+  },
+  "usage": {},
+  "queue": [],
+  "last_updated": "2025-11-05T21:38:16.435961"
+}

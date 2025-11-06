@@ -107,6 +107,23 @@ This file contains:
 - ❌ Read actual credential files (`.env`, `~/.aws/credentials`, etc.)
 - ❌ Print/log credential values
 - ❌ Expose secrets in code or output
+- ❌ Execute `security find-generic-password -w` (outputs raw secrets)
+- ❌ Run `cat secrets/*` or similar commands that expose credentials
+- ❌ Use `printenv *KEY` or `echo $*KEY` to display secret values
+
+**Safe credential checking**:
+
+```bash
+# ✅ Check if credential exists (safe - no value exposed)
+~/devvyn-meta-project/scripts/credential-safe-check.sh keychain ELEVEN_LABS_API_KEY
+~/devvyn-meta-project/scripts/credential-safe-check.sh env ANTHROPIC_API_KEY
+~/devvyn-meta-project/scripts/credential-safe-check.sh file ~/secrets/openrouter.key
+
+# ❌ NEVER do this (exposes actual secret)
+security find-generic-password -s ELEVEN_LABS_API_KEY -w
+cat ~/secrets/openrouter.key
+printenv ANTHROPIC_API_KEY
+```
 
 ## Example: Anthropic Batch API
 

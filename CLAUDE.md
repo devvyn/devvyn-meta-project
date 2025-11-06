@@ -39,80 +39,62 @@ MessagesLost ∨ QueueGrowing ∨ RegistrationFails ∨ TLAFails
 ls ~/infrastructure/agent-bridge/bridge/inbox/code/
 ```
 
-## OPERATIONS
-
-### Send Messages
+## ESSENTIAL OPERATIONS
 
 ```bash
-# Smart routing (auto-classifies urgency/destination)
-./scripts/bridge-send-smart.sh --auto code "Subject" file.md
+# Send message
+./scripts/bridge-send.sh <from> <to> <priority> <subject> <file>
 
-# Manual routing
-./scripts/bridge-send.sh code chat HIGH "Subject" file.md
-./scripts/bridge-send.sh code human CRITICAL "Approval Needed" file.md
+# Check status
+./scripts/bridge-register.sh status code
+./scripts/bridge-register.sh list
 ```
-
-### Check Status
-
-```bash
-./scripts/bridge-register.sh status code    # Your status
-./scripts/bridge-register.sh list           # All agents
-cat bridge/registry/queue_stats.json        # Queue health
-```
-
-### Resource Provisioning
-
-```bash
-# Check download status
-transmission-remote -l
-
-# Web UI
-open http://localhost:9091
-
-# Request resource (future)
-./scripts/resource-request.sh --source "magnet:?xt=..." --purpose "reason"
-
-# Check completions
-tail -f ~/devvyn-meta-project/logs/torrent-completions.log
-```
-
-**Watch Folder**: `~/Music/Music/Media.localized/Automatically Add to Music.localized/`
-**Shared Storage**: `~/infrastructure/shared-resources/`
-**Pattern Doc**: `knowledge-base/patterns/collective-resource-provisioning.md`
 
 ## RECOVERY
 
-### Bridge Issues
-
 ```bash
-# Clear locks
+# Clear locks and retry
 rm -f bridge/queue/processing/*.lock
-
-# Manual queue process
-./scripts/bridge-process-queue.sh --verbose
-
-# Re-register
-./scripts/bridge-register.sh unregister code
-./scripts/bridge-register.sh register code
+./scripts/bridge-register.sh unregister code && ./scripts/bridge-register.sh register code
 ```
 
-### System Health
+## SECURITY: CREDENTIAL HANDLING (CRITICAL)
 
-```bash
-~/devvyn-meta-project/scripts/system-health-check.sh
-launchctl list | grep devvyn
-tail -50 ~/devvyn-meta-project/logs/*wrapper-errors.log
-```
+**NEVER display credential values in conversation output**
 
-## KEY FILES
+Forbidden actions:
 
-- `COORDINATION_PROTOCOL.md` - Canonical reference
-- `ClaudeCodeSystem.tla` - Formal specification
-- `status/current-project-state.json` - Project health
+- `security find-generic-password -w` → outputs raw keychain secrets
+- `cat secrets/*`, `cat .env*` → exposes credential files
+- `printenv *KEY`, `echo $*KEY` → reveals environment secrets
+- Displaying API keys, tokens, passwords in responses
 
-## AGENT ECOSYSTEM
+Safe alternatives ONLY:
 
-- **Chat**: Strategic intelligence (autonomous via osascript)
-- **Code**: Technical implementation (this agent)
-- **INVESTIGATOR**: Pattern detection (LaunchAgent, daily 9am)
-- Background: Queue processor (5m), unanswered monitor (6h), HOPPER (2h)
+- `./scripts/credential-safe-check.sh keychain <service>` → confirms existence
+- `./scripts/credential-safe-check.sh env <variable>` → checks if set
+- `./scripts/elevenlabs-key-manager.sh test` → validates setup
+- Reference env var names (e.g., `ANTHROPIC_API_KEY`) without retrieving
+
+When user asks "do you have access to X key?":
+
+- Confirm setup status only: "✅ Credential exists" or "❌ Not configured"
+- Provide setup instructions referencing env vars
+- NEVER retrieve or display actual secret values
+
+Quick reference: `docs/security/credential-safety-quick-reference.md`
+Detailed patterns: `knowledge-base/patterns/secure-api-access.md`
+Incident history: `docs/security/credential-leak-incident-2025-11-03.md`
+
+## REFERENCE
+
+**Detailed operations**: See OPERATIONS_REFERENCE.md for:
+
+- Publication surfaces and alternative interfaces
+- Resource provisioning
+- System health diagnostics
+- Advanced bridge operations
+
+**Core protocols**: See INVARIANTS.md or COORDINATION_PROTOCOL.compact.md
+
+**Patterns**: See knowledge-base/patterns/ for design patterns and theory

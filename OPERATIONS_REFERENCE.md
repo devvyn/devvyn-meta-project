@@ -1,6 +1,14 @@
 # Operations Reference - Code Agent
 
+**Platform**: Ludarium Behavioral Coordination Platform
+
 This document contains detailed operations, alternative interfaces, and specialized features. For essential operations, see CLAUDE.md.
+
+**Related Documentation**:
+
+- PLATFORM_NOMENCLATURE.md - Naming system and conceptual framework
+- INVARIANTS.md - System guarantees and formal invariants
+- CLAUDE.md - Essential operations and startup procedures
 
 ## Publication Surfaces
 
@@ -67,20 +75,23 @@ tail -50 ~/devvyn-meta-project/logs/*wrapper-errors.log
 
 ## Key Reference Files
 
+- `PLATFORM_NOMENCLATURE.md` - **Naming system and conceptual framework (The Seven-Layer Stack, The Mirroring)**
 - `COORDINATION_PROTOCOL.md` - Full coordination specification
 - `COORDINATION_PROTOCOL.compact.md` - Essential protocol (recommended)
-- `BRIDGE_SPEC_PROTOCOL.md` - Bridge implementation details
+- `BRIDGE_SPEC_PROTOCOL.md` - Bridge implementation details (The Substrate)
 - `ClaudeCodeSystem.tla` - Formal specification
 - `INVARIANTS.md` - Essential guarantees (extracted from TLA+)
 - `status/current-project-state.json` - Project health metrics
 
-## Agent Ecosystem
+## Agent Ecosystem (The Garden)
 
-- **Chat**: Strategic intelligence (autonomous via osascript)
-- **Code**: Technical implementation (this agent)
-- **INVESTIGATOR**: Pattern detection (LaunchAgent, daily 9am)
-- **HOPPER**: Regular analysis and summarization (LaunchAgent, 2h)
+- **CHAT** (The Strategist): Strategic intelligence (autonomous via osascript)
+- **CODE** (The Builder): Technical implementation (this agent)
+- **INVESTIGATOR** (The Detective): Pattern detection (LaunchAgent, daily 9am)
+- **HOPPER** (The Concierge): Micro-decision handler (LaunchAgent, pattern-based)
 - **Background processes**: Queue processor (5m), unanswered monitor (6h)
+
+See PLATFORM_NOMENCLATURE.md for complete agent roles and behavioral descriptions.
 
 ## Advanced Bridge Operations
 

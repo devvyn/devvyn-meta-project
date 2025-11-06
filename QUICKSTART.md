@@ -1,5 +1,7 @@
 # Quickstart - Code Agent
 
+**Platform**: Ludarium Behavioral Coordination Platform
+
 ## Startup (Every Session)
 
 ```bash
@@ -30,5 +32,9 @@ rm -f bridge/queue/processing/*.lock && \
 
 ---
 
-*For detailed operations, see: CLAUDE.md*
-*For system invariants, see: INVARIANTS.md*
+**Additional Resources**:
+
+- CLAUDE.md - Detailed operations and context
+- INVARIANTS.md - System guarantees and formal invariants
+- PLATFORM_NOMENCLATURE.md - Complete naming system and conceptual framework
+- OPERATIONS_REFERENCE.md - Advanced operations and publication surfaces

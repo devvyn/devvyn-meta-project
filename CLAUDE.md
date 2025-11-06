@@ -1,11 +1,15 @@
 # Meta-Project Coordination - Code Agent
 
+**Platform**: Ludarium Behavioral Coordination Platform
+
 ## ORIENTATION
 
 Context: Multi-agent coordination system for all sub-projects
-Bridge: `~/infrastructure/agent-bridge/bridge/` (CANONICAL)
+Bridge: `~/infrastructure/agent-bridge/bridge/` (CANONICAL - The Substrate)
 Authority: Technical implementation, bridge maintenance, formal verification
 Escalate to Chat: Strategic decisions, cross-project patterns, framework changes
+
+**See also**: PLATFORM_NOMENCLATURE.md for complete naming system (The Seven-Layer Stack, The Mirroring)
 
 ## INVARIANTS
 
@@ -24,7 +28,32 @@ MessagesLost ∨ QueueGrowing ∨ RegistrationFails ∨ TLAFails
 ∀ file ∈ AgentInstructions:
   ContainsOnlyBehavior(file) ∧ ¬ContainsRationale(file)
   ∧ Length(file) < 200 \* lines
+
+\* Workspace boundaries
+∀ f ∈ metaFiles : ∀ sp ∈ SubProjects : f ∉ subFiles[sp]
+∀ sp ∈ SubProjects : ∀ f ∈ subFiles[sp] : SecurityLevel(f) ≠ SECRET
 ```
+
+## WORKSPACE BOUNDARIES
+
+**Formal specification**: [WORKSPACE_BOUNDARIES.md](./WORKSPACE_BOUNDARIES.md)
+
+**Meta-project authority** (coordination):
+- Agent instructions, patterns, shared tools
+- Service registry, bridge protocol
+- Security infrastructure
+
+**Sub-project authority** (domain implementation):
+- Domain-specific code, tests, docs
+- Production configurations, scientific validation
+
+**Key rules**:
+- No file path overlaps (except WORKSPACE_BOUNDARIES.md mirrored)
+- Credentials ONLY in meta-project (~/Secrets/)
+- Services register with meta-project
+- Patterns flow upward (sub-project → meta-project KB)
+
+**When working in sub-projects**: Switch context explicitly, follow sub-project CLAUDE.md
 
 ## STARTUP (Every Session)
 
@@ -88,13 +117,18 @@ Incident history: `docs/security/credential-leak-incident-2025-11-03.md`
 
 ## REFERENCE
 
-**Detailed operations**: See OPERATIONS_REFERENCE.md for:
+**Platform conceptual framework**: PLATFORM_NOMENCLATURE.md
+- Complete naming system (technical + behavioral)
+- The Seven-Layer Stack (Substrate → Garden)
+- The Mirroring (recursive coordination loop)
+- Agent roles and behavioral descriptions
 
-- Publication surfaces and alternative interfaces
+**Detailed operations**: OPERATIONS_REFERENCE.md
+- Publication surfaces and alternative interfaces (The Interface)
 - Resource provisioning
 - System health diagnostics
 - Advanced bridge operations
 
-**Core protocols**: See INVARIANTS.md or COORDINATION_PROTOCOL.compact.md
+**Core protocols**: INVARIANTS.md or COORDINATION_PROTOCOL.compact.md
 
-**Patterns**: See knowledge-base/patterns/ for design patterns and theory
+**Patterns**: knowledge-base/patterns/ for design patterns and theory

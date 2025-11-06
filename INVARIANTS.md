@@ -1,6 +1,10 @@
 # System Invariants
 
+**Platform**: Ludarium Behavioral Coordination Platform
+
 Essential guarantees extracted from ClaudeCodeSystem.tla specification.
+
+**See also**: PLATFORM_NOMENCLATURE.md for complete naming system and conceptual framework.
 
 ## Session Prerequisites
 
@@ -111,6 +115,28 @@ INFO ≜ HistoricalAnalysis ∨ Documentation ∨ LowImpactObservation
 ```
 
 Message priorities defined by impact and urgency.
+
+## Workspace Boundaries
+
+```tla
+FileOwnershipExclusive ≜ ∀ f ∈ metaFiles : ∀ sp ∈ SubProjects : f ∉ subFiles[sp]
+
+CredentialsInMetaOnly ≜ ∀ sp ∈ SubProjects : ∀ f ∈ subFiles[sp] : SecurityLevel(f) ≠ SECRET
+
+ServicesMustRegister ≜ ∀ sp ∈ SubProjects : OffersService(sp) ⇒ sp ∈ DOMAIN ServiceRegistry
+
+PatternFlowUpward ≜ ∀ pattern ∈ knowledgeGraph :
+  Source(pattern) ∈ SubProjects ⇒ pattern ∈ metaFiles
+```
+
+Workspace separation guarantees:
+
+- No file exists in both meta-project and sub-project (except WORKSPACE_BOUNDARIES.md)
+- Credentials stored only in meta-project (~/Secrets/)
+- Sub-projects offering services must register with meta-project
+- Patterns discovered in sub-projects flow upward to meta-project knowledge base
+
+**See also**: [WORKSPACE_BOUNDARIES.md](./WORKSPACE_BOUNDARIES.md) for complete formal specification with 10 invariants, safety properties, and liveness properties.
 
 ---
 

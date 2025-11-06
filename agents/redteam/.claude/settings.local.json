@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(~/devvyn-meta-project/scripts/credential-leak-scanner.sh:*)",
+      "Bash(git log:*)",
+      "Bash(cat:*)",
+      "Bash(git rev-list:*)",
+      "Bash(chmod:*)",
+      "Bash(fd:*)",
+      "Bash(ffprobe:*)",
+      "WebSearch",
+      "WebFetch(domain:stackoverflow.com)",
+      "Bash(~/devvyn-meta-project/scripts/richness-comparison.sh:*)",
+      "Bash(~/devvyn-meta-project/scripts/audio-budget-manager.py set-provider elevenlabs_v3_alpha)",
+      "Bash(~/devvyn-meta-project/scripts/audio-budget-manager.py status)",
+      "WebFetch(domain:elevenlabs.io)",
+      "WebFetch(domain:help.elevenlabs.io)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

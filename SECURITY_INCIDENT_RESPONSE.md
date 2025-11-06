@@ -8,6 +8,7 @@
 ## Executive Summary
 
 Multiple API keys have been leaked through different vectors:
+
 1. **OpenRouter API key** (`...a4cb`) exposed in PUBLIC GitHub repository and GitHub Pages
 2. **OpenAI API key** (`sk-proj-*`) detected in shell command history (local only)
 
@@ -16,6 +17,7 @@ The OpenRouter key was PUBLICLY ACCESSIBLE and has been disabled by OpenRouter s
 ## Findings
 
 ### CRITICAL: OpenRouter API Key - PUBLIC EXPOSURE
+
 - **Type**: OpenRouter API Key
 - **Key Pattern**: `sk-or-v1-*`
 - **Key Ending**: `...a4cb` (full: `419e2e647f39834e1e8371c2fc54623c29c5e83bbd87a2b34334eb89cebca4cb`)
@@ -30,6 +32,7 @@ The OpenRouter key was PUBLICLY ACCESSIBLE and has been disabled by OpenRouter s
 - **Exposure Type**: PUBLICLY READABLE on both GitHub repo AND GitHub Pages website
 
 ### HIGH: OpenAI API Key - LOCAL EXPOSURE ONLY
+
 - **Type**: OpenAI API Key (project-scoped)
 - **Pattern**: `sk-proj-*`
 - **Location**: `~/.zsh_history` (lines 47, 75)
@@ -38,6 +41,7 @@ The OpenRouter key was PUBLICLY ACCESSIBLE and has been disabled by OpenRouter s
 - **Public Exposure**: ❌ Not publicly accessible
 
 ### Protected Assets (Verified Secure)
+
 - `secrets/` directory: ✅ Properly gitignored
 - Current OpenRouter keys: ✅ Protected in secrets/ (different key than leaked)
 - Current keys DO NOT match leaked keys: ✅ Verified
@@ -45,9 +49,11 @@ The OpenRouter key was PUBLICLY ACCESSIBLE and has been disabled by OpenRouter s
 ## Immediate Actions Required
 
 ### 1. OpenRouter Key (CRITICAL - Public Exposure)
+
 **Status**: ✅ Key already disabled by OpenRouter security team
 
 **Remaining actions**:
+
 ```bash
 # 1. Generate new OpenRouter key at: https://openrouter.ai/keys
 # 2. Update local secrets:
@@ -62,6 +68,7 @@ security add-generic-password \
 ```
 
 ### 2. OpenAI Key (HIGH - Local Only)
+
 ```bash
 # 1. Go to: https://platform.openai.com/api-keys
 # 2. Find the key ending in: 9GMA
@@ -82,7 +89,9 @@ security add-generic-password \
 **Two approaches**:
 
 #### Option A: Keep History as Learning Artifact (RECOMMENDED)
+
 Since the key was disabled immediately upon detection:
+
 - ✅ No active security risk
 - ✅ Preserves incident context for learning
 - ✅ No disruption to collaborators
@@ -92,6 +101,7 @@ Since the key was disabled immediately upon detection:
 **Action**: Add prominent warning in affected commits/docs
 
 #### Option B: Purge from History (Optional)
+
 If you prefer complete removal despite the key being disabled:
 
 ```bash
@@ -125,6 +135,7 @@ git push --force --tags origin
 **⚠️  Collaboration Impact**: Anyone who has cloned this repo will need to re-clone it fresh after the force-push.
 
 ### 4. Clear Shell History (OpenAI Key)
+
 ```bash
 # Remove the compromised OpenAI key entries from shell history
 sed -i.backup '/sk-proj-/d' ~/.zsh_history
@@ -136,6 +147,7 @@ sed -i.backup '/sk-proj-/d' ~/.zsh_history
 ```
 
 ### 3. Verify No Other Exposures
+
 ```bash
 # Scan for any other leaks
 ~/devvyn-meta-project/scripts/credential-leak-scanner.sh --quick
@@ -146,6 +158,7 @@ grep -r "sk-proj-z9mnDQ" /var/log/ 2>/dev/null
 ```
 
 ### 4. Update Credential Storage
+
 ```bash
 # Store new key in macOS Keychain
 security add-generic-password \
@@ -161,7 +174,9 @@ security add-generic-password \
 ## Root Cause Analysis
 
 ### OpenRouter Key Leak (Public)
+
 **How it occurred**:
+
 1. Test script output included raw API key in markdown documentation
 2. File `docs/status/2025-10-09-openrouter-test.md` committed with key embedded
 3. Repository is PUBLIC on GitHub
@@ -169,19 +184,23 @@ security add-generic-password \
 5. Key remained in git history across multiple branches
 
 **Why it was severe**:
+
 - Public repository = anyone could access the key
 - GitHub Pages deployment = additional public exposure vector
 - Git history = persists even after file deletion
 - Multiple commits = harder to remove completely
 
 ### OpenAI Key Leak (Local)
+
 **How it occurred**:
+
 1. API key passed directly in curl command: `-H "Authorization: Bearer sk-proj-..."`
 2. Command stored in `.zsh_history`
 3. May have been captured by system monitoring/logging
 4. Visible in process listings while running
 
 **Why it wasn't worse**:
+
 - `.gitignore` properly configured for `secrets/`
 - Key never committed to version control
 - Exposure limited to local shell history
@@ -190,7 +209,9 @@ security add-generic-password \
 ## Prevention Measures Implemented
 
 ### 1. Enhanced .gitignore (COMPLETED)
+
 Added comprehensive credential protection patterns:
+
 ```gitignore
 # Credential leak protection
 .bash_history
@@ -208,7 +229,9 @@ Added comprehensive credential protection patterns:
 ```
 
 ### 2. Secure Credential Access Pattern
+
 Use the safe wrapper script:
+
 ```bash
 # Instead of:
 curl -H "Authorization: Bearer $API_KEY" ...
@@ -219,7 +242,9 @@ curl -H "Authorization: Bearer $(security find-generic-password -s openai-api-ke
 ```
 
 ### 3. Shell History Configuration
+
 Add to `~/.zshrc` to prevent credential logging:
+
 ```bash
 # Don't save commands with credentials to history
 HISTORY_IGNORE="(Bearer*|*sk-*|*API_KEY*|*password*|*token*|security find-generic-password*)"
@@ -227,7 +252,9 @@ setopt HIST_IGNORE_SPACE  # Commands starting with space aren't saved
 ```
 
 ### 4. Pre-commit Hook
+
 Consider adding git pre-commit hook:
+
 ```bash
 #!/bin/bash
 # .git/hooks/pre-commit
@@ -240,6 +267,7 @@ fi
 ## Monitoring and Detection
 
 ### Regular Scans
+
 ```bash
 # Add to weekly/daily routine
 ~/devvyn-meta-project/scripts/credential-leak-scanner.sh --quick
@@ -250,7 +278,9 @@ fi
 ```
 
 ### Alert Response
+
 If you receive similar alerts in future:
+
 1. Run immediate scan: `credential-leak-scanner.sh --quick`
 2. Check git history: `git log --all -S "sk-" --source`
 3. Rotate keys immediately
@@ -259,9 +289,11 @@ If you receive similar alerts in future:
 ## Compliance and Documentation
 
 ### Security Best Practices Reference
+
 See: `knowledge-base/patterns/secure-api-access.md`
 
 ### Never Display Credentials
+
 - ❌ `echo $API_KEY`
 - ❌ `cat secrets/key.txt`
 - ❌ `security find-generic-password -w`
@@ -271,7 +303,8 @@ See: `knowledge-base/patterns/secure-api-access.md`
 ## Verification Checklist
 
 ### OpenRouter Key (Public Leak)
-- [ ] New OpenRouter key generated at https://openrouter.ai/keys
+
+- [ ] New OpenRouter key generated at <https://openrouter.ai/keys>
 - [ ] Old key confirmed disabled (✅ done by OpenRouter)
 - [ ] Git history purged using git-filter-repo
 - [ ] Force-push completed to all branches
@@ -283,6 +316,7 @@ See: `knowledge-base/patterns/secure-api-access.md`
 - [ ] Monitor OpenRouter usage logs for unauthorized access
 
 ### OpenAI Key (Local Leak)
+
 - [ ] OpenAI key rotated and old key deleted
 - [ ] Shell history cleaned (lines 47, 75 removed)
 - [ ] No other system logs contain the key
@@ -291,6 +325,7 @@ See: `knowledge-base/patterns/secure-api-access.md`
 - [ ] Monitor OpenAI usage logs for unusual activity
 
 ### General Security
+
 - [ ] Pre-commit hooks installed (if applicable)
 - [ ] Team notified about security incident
 - [ ] Post-incident review scheduled
@@ -325,6 +360,7 @@ See: `knowledge-base/patterns/secure-api-access.md`
 ## Contact and Escalation
 
 For questions about:
+
 - Key rotation: OpenAI Platform Support
 - Security policy: Refer to `CLAUDE.md` security section
 - Pattern guidance: `knowledge-base/patterns/secure-api-access.md`
